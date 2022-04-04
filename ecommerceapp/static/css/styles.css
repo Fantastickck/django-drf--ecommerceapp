@@ -1,0 +1,27 @@
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: orange;
+}
+
+.category {
+    /* margin-top: 10px; */
+    border-bottom: 2px solid rgb(229, 229, 229);
+}
+.category:hover {
+    background-color: rgb(229, 229, 229);
+}
+
+.product-description {
+    margin-top: 20px;
+}
+
+img {
+    float: left;
+}
+
+.card {
+    margin-top: 20px;
+}

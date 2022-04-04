@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+{% block content %}
+<div class="product-description">
+    {% if product.image %}
+    <a href="{{ product.image.url }}"><img src="{{ product.image.url }}" width="400px" alt="..."></a>
+    {% endif %}
+    <h2 class="name-product">{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <h3>{{product.price}} руб</h3>
+    <p>Бренд: {{ brand.name }}</p>
+    <button class="btn btn-primary" type="button">В корзину</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Характеристики</th>
+                <th scope="col">Значение</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feature in features %}
+            <tr>
+                {% if feature.value_float %}
+                <td>{{ feature.feature }}</td>
+                <td>{{ feature.value_float }}</td>
+                {% elif feature.value_text %}
+                <td>{{ feature.feature }} </td>
+                <td>{{ feature.value_text }}</td>
+                {% else %}
+                <td>{{ feature.feature }} : -</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+{% endblock %}
+
+</html>

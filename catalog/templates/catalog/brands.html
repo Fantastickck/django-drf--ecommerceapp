@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Бренды
+{% endblock %}
+
+{% block content %}
+{% for brand in brands %}
+<div class="d-flex position-relative category">
+    <img src="..." class="flex-shrink-0 me-3" alt="...">
+    <div>
+      <h5 class="mt-0">{{ brand.name }}</h5>
+      <p>{{ brand.info }}</p>
+      <a href="{% url 'get_brand' brand.slug %}" class="stretched-link"></a>
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}
