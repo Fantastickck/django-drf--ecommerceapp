@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ category.name }}
+{% endblock %}
+
+{% block content %}
+{% for product in products %}
+<div class="card">
+    {% if product.image %}
+    <a href="{{ product.image.url }}"><img src="{{ product.image.url }}" height="125px" alt="..."></a>
+    {% endif %}
+    <div class="card-body">
+        <a href="{% url 'get_product' product.pk %}">
+            <h5 class="card-title">{{ product.name }}</h5>
+        </a>
+        <p class="card-text">Цена: {{ product.price }}</p>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-primary" type="button">В корзину</button>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -8,8 +8,7 @@ from django.db import models
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name='Наименование товара')
     description = models.TextField(blank=True, verbose_name='Описание товара')
-    price = models.DecimalField(
-        max_digits=10, decimal_places=2, verbose_name='Цена товара')
+    price = models.IntegerField(verbose_name='Цена товара')
     count = models.IntegerField(default=0, verbose_name='Количество товаров')
     image = models.ImageField(
         upload_to='photos/%Y/%m/%d/', blank=True, verbose_name='Изображение товара')

@@ -7,11 +7,14 @@
 {% block content %}
 {% for category in categories %}
 <div class="d-flex position-relative category">
-    <img src="..." class="flex-shrink-0 me-3" alt="...">
+  {% if category.logo %}
+    <img src="{{ category.logo.url }}" class="flex-shrink-0 me-3" alt="..." width="100px">
+  {% endif %}
+  
     <div>
       <h5 class="mt-0">{{ category.name }}</h5>
       <p>{{ category.info }}</p>
-      <a href="{% url 'get_category' category.slug %}" class="stretched-link"></a>
+      <a href="{% url 'get_products' category.slug %}" class="stretched-link"></a>
     </div>
   </div>
 {% endfor %}

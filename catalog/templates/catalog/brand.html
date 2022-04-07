@@ -5,29 +5,19 @@
 {% endblock %}
 
 {% block content %}
-<ul class="list-group list-group-horizontal">
-    {% for category in categories %}
-    <li class="list-group-item">{{ category.name }}</li>
-    {% endfor %}
-</ul>
 
-{% for product in products %}
-<div class="card">
-    {% if product.image %}
-    <a href="{{ product.image.url }}"><img src="{{ product.image.url }}" height="125px" alt="..."></a>
-    {% endif %}
-    <div class="card-body">
-        <a href="{% url 'get_product' product.pk %}">
-            <h5 class="card-title">{{ product.name }}</h5>
-        </a>
-        <p class="card-text">Цена: {{ product.price }}</p>
-    </div>
-    <div class="card-footer">
-        <button class="btn btn-primary" type="button">В корзину</button>
-    </div>
+
+{% for category in categories %}
+<div class="card" style="width: 14em;">
+  {% if category.logo %}
+  <img src="{{ category.logo.url }}" class="card-img-top">
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{ category.name }}</h5>
+  </div>
+  <a href="{% url 'get_products' category.slug %}?brand={{ brand.slug }}" class="stretched-link"></a>
 </div>
 {% endfor %}
 
-
-
+<p>{{ brand.info }}</p>
 {% endblock %}

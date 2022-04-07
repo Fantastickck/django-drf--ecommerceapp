@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-
 from .models import Category, Product, Brand, Product_Feature
 
 
@@ -12,14 +11,18 @@ def get_categories(request):
     return render(request, 'catalog/categories.html', context)
 
 
-def get_category(request, slug):
+def get_products(request, slug):
     category = Category.objects.get(slug=slug)
     products = Product.objects.filter(category__slug=slug)
     context = {
         'category': category,
-        'products': products,
     }
-    return render(request, 'catalog/category.html', context)
+    if request.GET.get('brand'):
+        brand = Brand.objects.get(slug=request.GET.get('brand'))
+        products = Product.objects.filter(category__slug=slug, brand__slug=request.GET.get('brand'))
+        context['brand'] = brand
+    context['products'] = products
+    return render(request, 'catalog/products.html', context)
 
 
 def get_product(request, product_id):
@@ -31,7 +34,7 @@ def get_product(request, product_id):
         'brand': brand,
         'features': features,
     }
-    return render(request, 'catalog/product.html', context)
+    return render(request, 'catalog/one_product.html', context)
 
 
 def get_brands(request):
@@ -42,7 +45,7 @@ def get_brands(request):
     return render(request, 'catalog/brands.html', context)
 
 
-def get_brand(request, slug):
+def get_categories_by_brand(request, slug):
     brand = Brand.objects.get(slug=slug)
     categories = Category.objects.filter(brand__slug=slug)
     products = Product.objects.filter(brand__slug=slug)
@@ -52,3 +55,5 @@ def get_brand(request, slug):
         'products': products,
     }
     return render(request, 'catalog/brand.html', context)
+
+

@@ -25,7 +25,10 @@
         <tbody>
             {% for feature in features %}
             <tr>
-                {% if feature.value_float %}
+                {% if feature.value_float and feature.value_text %}
+                <td>{{ feature.feature }}</td>
+                <td>{{ feature.value_float }} {{ feature.value_text }}</td>
+                {% elif feature.value_float %}
                 <td>{{ feature.feature }}</td>
                 <td>{{ feature.value_float }}</td>
                 {% elif feature.value_text %}
