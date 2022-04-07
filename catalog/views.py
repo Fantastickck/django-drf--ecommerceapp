@@ -1,59 +1,58 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from msilib.schema import ListView
+from django.views.generic import DetailView, ListView
+
 from .models import Category, Product, Brand, Product_Feature
 
 
-def get_categories(request):
-    categories = Category.objects.all()
-    context = {
-        'categories': categories
-    }
-    return render(request, 'catalog/categories.html', context)
+class GetCategories(ListView):
+    model = Category
+    template_name = 'catalog/categories.html'
+    context_object_name = 'categories'
 
 
-def get_products(request, slug):
-    category = Category.objects.get(slug=slug)
-    products = Product.objects.filter(category__slug=slug)
-    context = {
-        'category': category,
-    }
-    if request.GET.get('brand'):
-        brand = Brand.objects.get(slug=request.GET.get('brand'))
-        products = Product.objects.filter(category__slug=slug, brand__slug=request.GET.get('brand'))
-        context['brand'] = brand
-    context['products'] = products
-    return render(request, 'catalog/products.html', context)
+class GetProducts(ListView):
+    template_name = 'catalog/products.html'
+    context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = Category.objects.get(slug=self.kwargs['slug'])
+        return context
+
+    def get_queryset(self):
+        if self.request.GET.get('brand'):
+            return Product.objects.filter(category__slug=self.kwargs['slug'], brand__slug=self.request.GET.get('brand'))
+        else:
+            return Product.objects.filter(category__slug=self.kwargs['slug'])
 
 
-def get_product(request, product_id):
-    product = Product.objects.get(pk=product_id)
-    brand = Brand.objects.get(product__id=product_id)
-    features = Product_Feature.objects.filter(product__id=product_id)
-    context = {
-        'product': product,
-        'brand': brand,
-        'features': features,
-    }
-    return render(request, 'catalog/one_product.html', context)
+class GetOneProduct(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    pk_url_kwarg = "product_id"
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['features'] = Product_Feature.objects.filter(product__id=self.kwargs['product_id'])
+        return context
+        
+
+class GetBrands(ListView):
+    model = Brand
+    template_name = 'catalog/brands.html'
+    context_object_name = 'brands'
 
 
-def get_brands(request):
-    brands = Brand.objects.all()
-    context = {
-        'brands': brands
-    }
-    return render(request, 'catalog/brands.html', context)
+class GetCategoriesByBrand(ListView):
+    template_name = 'catalog/categories_by_brand.html'
+    context_object_name = 'categories'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['products'] = Product.objects.filter(brand__slug=self.kwargs['slug'])
+        context['brand'] = Brand.objects.get(slug=self.kwargs['slug'])
+        return context
 
-def get_categories_by_brand(request, slug):
-    brand = Brand.objects.get(slug=slug)
-    categories = Category.objects.filter(brand__slug=slug)
-    products = Product.objects.filter(brand__slug=slug)
-    context = {
-        'brand': brand,
-        'categories': categories,
-        'products': products,
-    }
-    return render(request, 'catalog/brand.html', context)
-
+    def get_queryset(self):
+        return Category.objects.filter(brand__slug=self.kwargs['slug'])
 
