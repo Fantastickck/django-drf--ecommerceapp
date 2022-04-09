@@ -47,7 +47,7 @@ class Brand(models.Model):
     info = models.TextField(blank=True, verbose_name='Описание бренда')
     logo = models.ImageField(
         blank=True, upload_to='logos/%Y/%m/%d/', verbose_name='Лого Бренда')
-    categories = models.ManyToManyField(Category, blank=True)
+    category = models.ManyToManyField(Category, blank=True)
 
     slug = models.SlugField(max_length=255, unique=True,
                             verbose_name='URL бренда')
@@ -61,7 +61,7 @@ class Brand(models.Model):
 
 
 class Feature(models.Model):
-    category_id = models.ForeignKey(
+    category = models.ForeignKey(
         Category, on_delete=models.PROTECT, verbose_name='Категория')
     name = models.CharField(max_length=255, verbose_name='Особенность')
 
@@ -82,5 +82,5 @@ class Product_Feature(models.Model):
         blank=True, verbose_name='Значение', null=True)
 
     class Meta:
-        verbose_name = 'Связь'
-        verbose_name_plural = 'Связи'
+        verbose_name = 'Характеристика товара'
+        verbose_name_plural = 'Характеристики товаров'
