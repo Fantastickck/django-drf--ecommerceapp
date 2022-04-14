@@ -1,14 +1,24 @@
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">LOGO SHOP</a>
+        <a class="navbar-brand" href="{% url 'home' %}">LOGO SHOP</a>
         <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+            <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+            {% if request.user.is_authenticated %}
+            <span class="navbar-text">
+                <a href="{% url 'get_user' user.profile.slug  %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">Log Out</a>
+            </span>
+            {% else %}
+            <span class="navbar-text">
+                <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">login</a>
+            </span>
+            {% endif %}
+            
         </form>
     </div>
 </nav>
 <nav class="nav nav-pills nav-fill">
-    <a class="nav-link active" href="{% url 'get_categories' %}">Категории</a>
+    <a class="nav-link" href="{% url 'get_categories' %}">Категории</a>
     <a class="nav-link" href="{% url 'get_brands' %}">Бренды</a>
     <a class="nav-link" href="#"></a>
     <a class="nav-link" href="#"></a>
