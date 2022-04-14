@@ -5,10 +5,9 @@ from django.conf.urls.static import static
 
 from ecommerceapp.settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 
-from main.views import index
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', include('main.urls')),
     path('catalog/', include('catalog.urls')),
     path('admin/', admin.site.urls),
 ]
