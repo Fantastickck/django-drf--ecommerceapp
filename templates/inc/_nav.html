@@ -6,6 +6,9 @@
             <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             {% if request.user.is_authenticated %}
             <span class="navbar-text">
+                <a href="{% url 'cart_detail' %}">Корзина </a>
+            </span>
+            <span class="navbar-text">
                 <a href="{% url 'get_user' user.profile.slug  %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">Log Out</a>
             </span>
             {% else %}

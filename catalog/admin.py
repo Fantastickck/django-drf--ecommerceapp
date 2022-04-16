@@ -12,7 +12,7 @@ class BrandInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'count', 'image_show', 'category', 'brand')
+    list_display = ('name', 'price', 'quantity', 'image_show', 'category', 'brand')
     inlines = [
         ProductFeatureInline
     ]

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     'main.apps.MainConfig',
     'catalog.apps.CatalogConfig',
+    'cart.apps.CartConfig',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'main.AdvUser'
+
+CART_SESSION_ID = 'cart'
+
