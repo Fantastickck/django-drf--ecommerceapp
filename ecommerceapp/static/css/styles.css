@@ -1,4 +1,6 @@
-
+.content {
+    padding: 30px 5%;
+}
 a {
     text-decoration: none;
 }

@@ -12,7 +12,17 @@ urlpatterns = [
     path('catalog/', include('catalog.urls')),
     path('cart/', include('cart.urls')),
     path('admin/', admin.site.urls),
+    # path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 if DEBUG:
+    import debug_toolbar
+
+    import mimetypes
+
+    mimetypes.add_type("application/javascript", ".js", True)
+
+    urlpatterns = [
+                      path('debug/', include(debug_toolbar.urls)),
+                  ] + urlpatterns
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

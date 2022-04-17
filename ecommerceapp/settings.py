@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'debug_toolbar',
     
-    'main.apps.MainConfig',
-    'catalog.apps.CatalogConfig',
-    'cart.apps.CartConfig',
+    'main',
+    'catalog',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerceapp.urls'
@@ -139,4 +142,8 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'main.AdvUser'
 
 CART_SESSION_ID = 'cart'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
