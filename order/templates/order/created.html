@@ -6,6 +6,6 @@
 
 {% block content %}
 <h2>Спасибо за ваш заказ, приходите еще!</h2>
-<p>Ваш заказ {{ order.id }} успешно создан</p>
-
+<p>Ваш заказ №{{ order.id }} успешно создан</p>
+<a href="{% url 'home' %}" class="btn btn-primary">На главную</a>
 {% endblock %}

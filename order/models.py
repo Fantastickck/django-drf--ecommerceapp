@@ -10,6 +10,7 @@ class Order(models.Model):
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
     email = models.EmailField(verbose_name='Эл. почта')
+    phone = models.CharField(max_length=255, verbose_name='Номер телефона')
     address = models.CharField(max_length=255, verbose_name='Адрес')
     created_date = models.DateTimeField(auto_now=True, verbose_name='Дата создания заказа')
     paid = models.BooleanField(default=False, verbose_name='Оплачено')
