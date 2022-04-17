@@ -37,8 +37,10 @@
         </tr>
         {% endwith %}
         {% endfor %}
+        
     </tbody>
 </table>
 <p>Всего: {{ cart.get_total_price }} Руб</p>
+<a href="{% url 'order_create' %}" class="btn btn-primary">Заказать</a>
 {% endblock %}
 

@@ -4,10 +4,10 @@
         <form class="d-flex">
             <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
             <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
-            {% if request.user.is_authenticated %}
             <span class="navbar-text">
                 <a href="{% url 'cart_detail' %}">Корзина </a>
             </span>
+            {% if request.user.is_authenticated %}
             <span class="navbar-text">
                 <a href="{% url 'get_user' user.profile.slug  %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">Log Out</a>
             </span>
