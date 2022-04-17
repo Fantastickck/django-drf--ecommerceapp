@@ -10,11 +10,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Image</th>
-            <th scope="col">Product</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Unit price</th>
-            <th scope="col">Price</th>
+            <th scope="col">Фото</th>
+            <th scope="col">Товар</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Цена 1шт</th>
+            <th scope="col">Цена в корзине</th>
             <th></th>
         </tr>
     </thead>
@@ -24,7 +24,7 @@
         <tr>
             <td>
                 {% if product.image %}
-                <img src="{{ product.image.url }}" alt="" width="60px">
+                <img src="{{ product.image.url }}" alt="" height="50px">
                 {% else %}
                 <img src="{% static 'images/no_photo.png' %}" alt="">
                 {% endif %}
@@ -33,14 +33,23 @@
             <td>{{ item.quantity }}</td>
             <td>{{ item.price }}</td>
             <td>{{ item.total_price }}</td>
-            <td><a href="{% url 'cart_remove' product.id %}">Remove</a></td>
+            <td><a href="{% url 'cart_remove' product.id %}">Удалить</a></td>
         </tr>
+        
         {% endwith %}
         {% endfor %}
-        
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><h3>Итого:</h3></td>
+            <td><h3> {{ cart.get_total_price }} Руб</h2></td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
-<p>Всего: {{ cart.get_total_price }} Руб</p>
+
 <a href="{% url 'order_create' %}" class="btn btn-primary">Заказать</a>
+<a href="{{ prev_url }}">Продолжить покупки</a>
 {% endblock %}
 

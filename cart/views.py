@@ -31,6 +31,7 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     cart = Cart(request)
     context = {
-        'cart': cart
+        'cart': cart,
+        'prev_url': request.META.get('HTTP_REFERER')
     }
     return render(request, 'cart/detail.html', context)
