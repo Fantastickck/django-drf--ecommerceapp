@@ -8,15 +8,30 @@
                 <a href="{% url 'cart_detail' %}">Корзина </a>
             </span>
             {% if request.user.is_authenticated %}
-            <span class="navbar-text">
-                <a href="{% url 'get_user' user.profile.slug  %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">Log Out</a>
-            </span>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle  username" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{ user.username }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'get_user' user.profile.slug %}">Профиль</a></li>
+                    <li><a class="dropdown-item" href="{% url 'get_orders' user.profile.slug %}">Заказы</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+                </ul>
+            </div>
+            <!-- <span class="navbar-text">
+                | <a href="{% url 'logout' %}">Log Out</a>
+            </span> -->
             {% else %}
             <span class="navbar-text">
                 <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">login</a>
             </span>
             {% endif %}
-            
+
         </form>
     </div>
 </nav>

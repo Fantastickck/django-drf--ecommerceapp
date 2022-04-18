@@ -7,12 +7,21 @@
 {% endblock %}
 
 {% block content %}
-{{ user.username }}
-{{ user.email }}
-<p>{{ profile.first_name }}</p>
-<p>{{ profile.last_name }}</p>
-<p>{{ profile.phone }}</p>
-<p>{{ profile.date_of_birth }}</p>
-<p>{{ profile.default_address }}</p>
-<a href="{% url 'edit_profile' %}"><button class="btn btn-primary">Изменить</button></a>
+{% include 'inc/_sidebar_profile.html' %}
+<div class="any-info">
+    <h6>Имя пользователя: {{ user.username }}</h6>
+    <h6>Эл. почта: {{ user.email }}</h6>
+    <p>{{ profile.first_name }}</p>
+    <p>{{ profile.last_name }}</p>
+    <p>{{ profile.phone }}</p>
+    <p>{{ profile.date_of_birth }}</p>
+    <p>{{ profile.default_address }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Изменить</button>
+    </form>
+
+</div>
+
 {% endblock %}

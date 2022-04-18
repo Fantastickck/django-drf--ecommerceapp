@@ -1,0 +1,6 @@
+<div class="list-group">
+    <a href="{% url 'get_user' user.profile.slug %}" class="list-group-item list-group-item-action active" aria-current="true">
+      Профиль
+    </a>
+    <a href="{% url 'get_orders' user.profile.slug %}" class="list-group-item list-group-item-action">Заказы</a>
+  </div>
