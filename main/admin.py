@@ -1,8 +1,7 @@
 from django.contrib import admin
 
-from .models import AdvUser, Profile, Feedback
+from .models import AdvUser, Profile
 # Register your models here.
 
 admin.site.register(AdvUser)
 admin.site.register(Profile)
-admin.site.register(Feedback)

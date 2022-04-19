@@ -56,7 +56,10 @@ def user_login(request):
             return redirect('home')
     else:
         form = UserLoginForm()
-    return render(request, 'main/login.html', {'form': form})
+    context = {
+        'form': form
+    }
+    return render(request, 'main/login.html', context)
 
 
 def user_logout(request):

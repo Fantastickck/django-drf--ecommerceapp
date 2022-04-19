@@ -10,7 +10,7 @@
     <a href="{{ product.image.url }}"><img src="{{ product.image.url }}" width="400px" alt="..."></a>
     {% endif %}
     <h2 class="name-product">{{ product.name }}</h2>
-    <p>{{ product.description }}</p>
+    <h5>{{ product.get_total_rating }} &#9733;</h5>
     <h3>{{product.price}} руб</h3>
     <p>Бренд: {{ product.brand.name }}</p>
     {% if product.quantity %}
@@ -22,6 +22,7 @@
     {% else %}
     <p>НЕТ В НАЛИЧИИ</p>
     {% endif %}
+    
     <table class="table">
         <thead>
             <tr>
@@ -48,6 +49,30 @@
             {% endfor %}
         </tbody>
     </table>
+    
+    
+    <h3>Отзывы о {{ product.name }}</h3>
+    <h4>Общий рейтинг: {{ product.get_total_rating }} &#9733;</h4>
+    {% if user.is_authentificated %}
+    <a href="{% url 'create_feedback' product.id %}" class="btn btn-primary">Написать отзыв</a>
+    {% else %}
+    <a href="{% url 'login' %}">Войдите, чтобы оставить отзыв</a>
+    {% endif %}
+    {% for feedback in product.feedbacks.all %}
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ feedback.user.username }}</h5>
+          <h5 class="card-title"> {{ feedback.rating }} &#9733;</h5>
+          <p class="card-text">{{ feedback.text }}</p>
+          {% for image in feedback.images.all %}
+            <img src="{{ image.image.url }}" alt="" height="100px">
+          {% endfor %}
+        </div>
+        <div class="card-footer">
+            {{ feedback.created_at}}
+        </div>
+      </div>
+    {% endfor %}
 
 </div>
 

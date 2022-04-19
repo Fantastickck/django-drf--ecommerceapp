@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Создание отзыва
+{% endblock %}
+
+{% block content %}
+<form action="" method="post" autocomplete="off" enctype="multipart/form-data">
+    <h2>Мой отзыв о {{ product.name }}</h2>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="file" name="images" multiple>
+    <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
+{% endblock %}

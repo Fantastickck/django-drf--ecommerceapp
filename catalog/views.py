@@ -1,11 +1,13 @@
-from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, View
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from .models import Category, Product, Brand, Product_Feature
+from .models import Category, Feedback, Product, Brand, ProductFeature, FeedbackImage
+from main.models import Profile
+from .forms import FeedbackForm
 
 from cart.forms import CartAddProductForm
+
 
 class GetCategories(ListView):
     model = Category
@@ -37,10 +39,11 @@ class GetOneProduct(DetailView):
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['features'] = Product_Feature.objects.filter(product__id=self.kwargs['product_id'])
+        context['features'] = ProductFeature.objects.filter(
+            product__id=self.kwargs['product_id'])
         context['cart_product_form'] = CartAddProductForm()
         return context
-        
+
 
 class GetBrands(ListView):
     model = Brand
@@ -54,7 +57,8 @@ class GetCategoriesByBrand(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.filter(brand__slug=self.kwargs['slug'])
+        context['products'] = Product.objects.filter(
+            brand__slug=self.kwargs['slug'])
         context['brand'] = Brand.objects.get(slug=self.kwargs['slug'])
         return context
 
@@ -62,14 +66,24 @@ class GetCategoriesByBrand(ListView):
         return Category.objects.filter(brand__slug=self.kwargs['slug'])
 
 
+class CreateFeedback(View):
+    def get(self, request, product_id):
+        user = request.user
+        product = Product.objects.get(id=product_id)
+        form = FeedbackForm()
+        context = {
+            'form': form,
+            'product': product,
+        }
+        return render(request, 'catalog/create_feedback.html', context)
 
-
-# Контроллер для добавления товаров в корзину
-# def product_detail(request, id):
-#     product = get_object_or_404(Product, id=id, available=True)
-#     cart_product_form = CartAddProductForm()
-#     context = {
-#         'product': product,
-#         'cart_product_form': cart_product_form
-#     }
-#     return render(request, 'catalog/product_detail.html', context)
+    def post(self, request, product_id):
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            feedback = Feedback.objects.create(
+                user=request.user, product_id=product_id, text=data['text'], rating=data['rating'])
+            for file in request.FILES.getlist('images'):
+                image = FeedbackImage.objects.create(
+                    feedback=feedback, image=file)
+            return redirect('get_product', product_id=product_id)

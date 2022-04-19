@@ -1,8 +1,7 @@
-from wsgiref.simple_server import demo_app
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from catalog.models import Product
+# from catalog.models import Product
 
 
 class AdvUser(AbstractUser):
@@ -37,12 +36,4 @@ class Profile(models.Model):
         verbose_name_plural = 'Профили'
 
 
-class Feedback(models.Model):
-    text = models.TextField(verbose_name='Текст отзыва')
-    rating = models.IntegerField(verbose_name='Оценка')
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name='Продукт')
-    user = models.ForeignKey(AdvUser, on_delete=models.PROTECT, verbose_name='Пользователь')
 
-    class Meta:
-        verbose_name = 'Отзыв'
-        verbose_name_plural = 'Отзывы'
