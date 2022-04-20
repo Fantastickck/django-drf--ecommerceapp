@@ -11,7 +11,6 @@ from main.forms import EditProfileForm, UserLoginForm, UserRegisterForm
 from .models import AdvUser, Profile
 
 
-
 def home(request):
     return render(request, 'main/home.html')
 
@@ -39,10 +38,12 @@ def user_register(request):
         else:
             messages.error(request, 'Ошибка регистрации')
     else:
+        if request.user.is_authenticated:
+            return render(request,'main/messages/already_auth.html')
         form = UserRegisterForm()
-    context = {
-        'form': form
-    }
+        context = {
+            'form': form
+        }
     return render(request, 'main/register.html', context)
 
 
@@ -54,6 +55,8 @@ def user_login(request):
             login(request, user)
             return redirect('home')
     else:
+        if request.user.is_authenticated:
+            return render(request,'main/messages/already_auth.html')
         form = UserLoginForm()
     context = {
         'form': form
@@ -64,7 +67,6 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
-
 
 
 class GetOrEditProfile(View):

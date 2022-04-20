@@ -11,7 +11,7 @@ class FeedbackImageInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id','user', 'first_name', 'last_name', 'email', 'address', 'created_date', 'paid']
+    list_display = ['id','user', 'first_name', 'last_name', 'email', 'address', 'created_date', 'get_total_cost', 'paid']
     list_filter = ['paid', 'created_date']
     list_display_links = ['id']
     inlines = [

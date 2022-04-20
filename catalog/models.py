@@ -6,6 +6,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, verbose_name='Описание товара')
     price = models.IntegerField(verbose_name='Цена товара')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество товаров')
+    quantity_of_purchases = models.PositiveIntegerField(default=0, verbose_name='Количество заказов товара')
     image = models.ImageField(
         upload_to='photos/%Y/%m/%d/', blank=True, verbose_name='Изображение товара')
     category = models.ForeignKey(

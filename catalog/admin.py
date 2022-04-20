@@ -15,7 +15,7 @@ class BrandInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'quantity',
+    list_display = ('name', 'price', 'quantity', 'quantity_of_purchases',
                     'image_show', 'category', 'brand', 'get_total_rating')
     inlines = [
         ProductFeatureInline
