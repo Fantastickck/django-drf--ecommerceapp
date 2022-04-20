@@ -1,5 +1,6 @@
+
 .content {
-    padding: 30px 5%;
+    margin: 20px 15% 0 15%;
 }
 a {
     text-decoration: none;
@@ -9,7 +10,6 @@ a:hover {
 }
 
 .category {
-    /* margin-top: 10px; */
     border-bottom: 2px solid rgb(229, 229, 229);
 }
 .category:hover {
@@ -48,5 +48,9 @@ img {
 .btn-group {
     width: 100%;
     text-align: left;
+}
+.navbar,
+.nav {
+    padding: 0 15%;
 }
 
