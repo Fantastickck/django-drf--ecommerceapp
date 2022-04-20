@@ -53,7 +53,7 @@
     
     <h3>Отзывы о {{ product.name }}</h3>
     <h4>Общий рейтинг: {{ product.get_total_rating }} &#9733;</h4>
-    {% if user.is_authentificated %}
+    {% if request.user.is_authenticated %}
     <a href="{% url 'create_feedback' product.id %}" class="btn btn-primary">Написать отзыв</a>
     {% else %}
     <a href="{% url 'login' %}">Войдите, чтобы оставить отзыв</a>

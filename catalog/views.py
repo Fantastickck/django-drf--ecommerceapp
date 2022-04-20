@@ -63,7 +63,7 @@ class GetCategoriesByBrand(ListView):
         return context
 
     def get_queryset(self):
-        return Category.objects.filter(brand__slug=self.kwargs['slug'])
+        return Category.objects.filter(brands__slug=self.kwargs['slug'])
 
 
 class CreateFeedback(View):

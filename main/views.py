@@ -82,20 +82,6 @@ class GetOrdersByUser(ListView):
     def get_queryset(self):
         return Order.objects.filter(user__profile__slug=self.kwargs['slug'])
 
-# def edit_profile(request):
-#     user = request.user
-#     profile = get_object_or_404(Profile, user=user)
-#     if request.method == 'POST':
-#         form = EditProfileForm(request.POST, instance=profile)
-#         if form.is_valid():
-#             profile = form.save(commit=False)
-#             profile.save()
-#             return redirect('home')
-#     else:
-#         form = EditProfileForm(instance=profile)
-#     return render(request, 'main/edit_profile.html', {'form': form})
-
-
 
 class GetOrEditProfile(View):
     def get(self, request, slug):
@@ -113,4 +99,4 @@ class GetOrEditProfile(View):
         if form.is_valid():
             Profile.objects.update_or_create(
                 user=user, defaults={**form.cleaned_data})
-            return redirect('home')
+            return redirect('get_user', slug=slug)

@@ -23,22 +23,6 @@
                 {% endfor %}
             </div>
         </div>
-        
-        <!-- <div class="btn-group">
-            <button type="button" class="btn dropdown-toggle  username" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Заказ № {{ order.id }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="{% url 'get_user' user.profile.slug %}">Профиль</a></li>
-                <li><a class="dropdown-item" href="{% url 'get_orders' user.profile.slug %}">Заказы</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
-            </ul>
-        </div> -->
         {% endfor %}
     </div>
 
