@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import FeedbackImage, Product, Category, Brand, Feature, ProductFeature, Feedback
+from .models import Product, Category, Brand, Feature, ProductFeature
 
 
 class ProductFeatureInline(admin.TabularInline):
@@ -11,9 +11,6 @@ class ProductFeatureInline(admin.TabularInline):
 class BrandInline(admin.TabularInline):
     model = Brand.category.through
 
-
-class FeedbackImageInline(admin.TabularInline):
-    model = FeedbackImage
 
 
 @admin.register(Product)
@@ -60,12 +57,7 @@ class BrandAdmin(admin.ModelAdmin):
     logo_show.__name__ = 'Лого'
 
 
-@admin.register(Feedback)
-class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'text', 'rating', 'created_at')
-    inlines = [
-        FeedbackImageInline
-    ]
+
 
 
 admin.site.register(Feature)

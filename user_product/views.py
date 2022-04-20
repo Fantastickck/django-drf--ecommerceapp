@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.views.generic import ListView, View
 
-from .models import Order, OrderItem
-from .forms import OrderForm
+
+from .models import Order, OrderItem, Feedback, FeedbackImage
+from .forms import OrderForm, FeedbackForm
 from main.models import AdvUser, Profile
 from cart.cart import Cart
+from catalog.models import Product
 
 
 # Возможно стоит переписать в вид контроллера-класса!!!
@@ -47,3 +50,35 @@ def order_create(request):
         else:
             form = OrderForm()
         return render(request, 'order/create.html', {'cart': cart, 'form': form})
+
+
+class GetOrdersByUser(ListView):
+    model = Order
+    template_name = 'user_product/orders_by_user.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        return Order.objects.filter(user__profile__slug=self.kwargs['slug'])
+
+
+class CreateFeedback(View):
+    def get(self, request, product_id):
+        user = request.user
+        product = Product.objects.get(id=product_id)
+        form = FeedbackForm()
+        context = {
+            'form': form,
+            'product': product,
+        }
+        return render(request, 'user_product/create_feedback.html', context)
+
+    def post(self, request, product_id):
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            feedback = Feedback.objects.create(
+                user=request.user, product_id=product_id, text=data['text'], rating=data['rating'])
+            for file in request.FILES.getlist('images'):
+                image = FeedbackImage.objects.create(
+                    feedback=feedback, image=file)
+            return redirect('get_product', product_id=product_id)

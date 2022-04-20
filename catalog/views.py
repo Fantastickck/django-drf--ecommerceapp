@@ -2,9 +2,7 @@ from django.views.generic import DetailView, ListView, View
 
 from django.shortcuts import render, redirect
 
-from .models import Category, Feedback, Product, Brand, ProductFeature, FeedbackImage
-from main.models import Profile
-from .forms import FeedbackForm
+from .models import Category, Product, Brand, ProductFeature
 
 from cart.forms import CartAddProductForm
 
@@ -23,6 +21,7 @@ class GetProducts(ListView):
         context = super().get_context_data(**kwargs)
         context['category'] = Category.objects.get(slug=self.kwargs['slug'])
         context['cart_product_form'] = CartAddProductForm()
+        context['prev_url'] = self.request.META.get('HTTP_REFERER')
         return context
 
     def get_queryset(self):
@@ -66,24 +65,4 @@ class GetCategoriesByBrand(ListView):
         return Category.objects.filter(brands__slug=self.kwargs['slug'])
 
 
-class CreateFeedback(View):
-    def get(self, request, product_id):
-        user = request.user
-        product = Product.objects.get(id=product_id)
-        form = FeedbackForm()
-        context = {
-            'form': form,
-            'product': product,
-        }
-        return render(request, 'catalog/create_feedback.html', context)
 
-    def post(self, request, product_id):
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            feedback = Feedback.objects.create(
-                user=request.user, product_id=product_id, text=data['text'], rating=data['rating'])
-            for file in request.FILES.getlist('images'):
-                image = FeedbackImage.objects.create(
-                    feedback=feedback, image=file)
-            return redirect('get_product', product_id=product_id)

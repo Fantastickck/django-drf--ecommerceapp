@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block content %}
+{% if products.count == 0 %}
+<h2>Нет товаров этой категории</h2>
+<a href="{{ prev_url }}">Вернуться назад</a>
+{% else %}
 {% for product in products %}
 <div class="card">
     {% if product.image %}
@@ -32,4 +36,6 @@
     {% endif %}
 </div>
 {% endfor %}
+{% endif %}
+
 {% endblock %}

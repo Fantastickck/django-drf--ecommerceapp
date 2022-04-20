@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-# from catalog.models import Product
 
 
 class AdvUser(AbstractUser):
