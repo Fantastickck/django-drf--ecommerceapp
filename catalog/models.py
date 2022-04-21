@@ -26,6 +26,10 @@ class Product(models.Model):
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
+    image = models.FileField(upload_to='products/%Y/%m/%d/', verbose_name='Изображения')
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, verbose_name='Категория')
