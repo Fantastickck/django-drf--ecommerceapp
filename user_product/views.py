@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.db.models import Q
 from django.views.generic import ListView, View
 
 
-from .models import Order, OrderItem, Feedback, FeedbackImage
+from .models import Favourites, Order, OrderItem, Feedback, FeedbackImage, FavouritesItem
 from .forms import OrderForm, FeedbackForm
+from cart.forms import CartAddProductForm
 from main.models import AdvUser, Profile
 from cart.cart import Cart
 from catalog.models import Product
@@ -90,9 +90,37 @@ class CreateFeedback(View):
                     feedback=feedback, image=file)
             return redirect('get_product', product_id=product_id)
 
+
 class RemoveFeedback(View):
     def get(self, request, feedback_id):
         feedback = Feedback.objects.get(id=feedback_id)
         product_id = feedback.product.id
         feedback.delete()
         return redirect('get_product', product_id)
+
+
+class GetFavourites(View):
+    def get(self, request):
+        favourites = Favourites.objects.get_or_create(user=self.request.user)[0]
+        cart_product_form = CartAddProductForm()
+        context = {
+            'favourites': favourites,
+            'cart_product_form': cart_product_form 
+        }
+        return render(request, 'user_product/favourites.html', context)
+
+
+class AddFavouritesItem(View):
+    def get(self, request, product_id):
+        favourites = Favourites.objects.get_or_create(user=self.request.user)[0]
+        product = Product.objects.get(id=product_id)
+        favourites_item = FavouritesItem.objects.get_or_create(favourites=favourites, product=product)
+        return redirect('get_favourites')
+
+
+class RemoveFavouritesItem(View):
+    def get(self, request, item_id):
+        favourites_item = FavouritesItem.objects.get(id=item_id)
+        favourites_item.delete()
+        return redirect('get_favourites')
+        

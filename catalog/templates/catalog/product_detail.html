@@ -18,6 +18,7 @@
         {% csrf_token %}
         {{ cart_product_form.as_p }}
         <button class="btn btn-primary" type="submit">В корзину</button>
+        <a href="{% url 'add_favourites_item' product.id %}" class="btn">В избранное</a>
     </form>
     {% else %}
     <p>НЕТ В НАЛИЧИИ</p>

@@ -18,20 +18,19 @@
         <a href="{% url 'get_product' product.pk %}">
             <h5 class="card-title">{{ product.name }}</h5>
         </a>
-        <p class="card-text">Цена: {{ product.price }}</p>
+        <p class="card-text">Цена: {{ product.price }} Руб</p>
     </div>
     {% if product.quantity %}
-    <!-- <div class="card-footer">
-        <button class="btn btn-primary" type="button">В корзину</button>
-    </div> -->
     <form action="{% url 'cart_add' product.id %}" method="post">
         {% csrf_token %}
         {{ cart_product_form.as_p }}
         <button class="btn btn-primary" type="submit">В корзину</button>
+        <a href="{% url 'add_favourites_item' product.id %}" class="btn">В избранное</a>
     </form>
     {% else %}
     <div class="card-footer">
-        <p>НЕТ В НАЛИЧИИ</p>
+        <span>НЕТ В НАЛИЧИИ</span>
+        <a href="{% url 'add_favourites_item' product.id %}" class="btn">В избранное</a>
     </div>
     {% endif %}
 </div>

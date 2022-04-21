@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Order, OrderItem, Feedback, FeedbackImage
+from .models import Order, OrderItem, Feedback, FeedbackImage, Favourites, FavouritesItem
 
 
 class OrderItemInline(admin.TabularInline):
@@ -8,6 +8,9 @@ class OrderItemInline(admin.TabularInline):
 
 class FeedbackImageInline(admin.TabularInline):
     model = FeedbackImage
+
+class FavouritesItemInline(admin.TabularInline):
+    model = FavouritesItem
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -21,7 +24,14 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'text', 'rating', 'created_at')
+    list_display = ['user', 'product', 'text', 'rating', 'created_at']
     inlines = [
         FeedbackImageInline
+    ]
+
+@admin.register(Favourites)
+class Favourites(admin.ModelAdmin):
+    list_display = ['user']
+    inlines = [
+        FavouritesItemInline
     ]

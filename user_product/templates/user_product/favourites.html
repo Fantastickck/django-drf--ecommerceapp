@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Избранное
+{% endblock %}
+
+{% block content %}
+<h1 class="h1">Ваше избранное</h1>
+{% for item in favourites.items.all %}
+<div class="card">
+    {% if item.product.image %}
+    <a href="{{ item.product.image.url }}"><img src="{{ item.product.image.url }}" height="125px" alt="..."></a>
+    {% endif %}
+    <div class="card-body">
+        <a href="{% url 'get_product' item.product.pk %}">
+            <h5 class="card-title">{{ item.product.name }}</h5>
+        </a>
+        <p class="card-text">Цена: {{ item.product.price }} Руб</p>
+    </div>
+<div>
+<form action="{% url 'cart_add' item.product.id %}" method="post">
+    {% csrf_token %}
+    {{ cart_product_form.as_p }}
+    <button class="btn btn-primary" type="submit">В корзину</button>
+    <a href="{% url 'remove_favourite_item' item.id %}">Удалить из избранного</a>
+</form>
+{% endfor %}
+{% endblock %}

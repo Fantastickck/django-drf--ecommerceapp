@@ -58,3 +58,21 @@ class Feedback(models.Model):
 class FeedbackImage(models.Model):
     feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE, related_name='images', verbose_name='Ответы')
     image = models.FileField(upload_to='feedbacks/%Y/%m/%d/', verbose_name='Изображения')
+
+
+class Favourites(models.Model):
+    user = models.OneToOneField(AdvUser, on_delete=models.CASCADE , verbose_name='Пользователь', related_name='favourites')
+
+    class Meta:
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное пользователей'
+    
+
+class FavouritesItem(models.Model):
+    favourites = models.ForeignKey(Favourites, on_delete=models.CASCADE, verbose_name='Избранное', related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар', related_name='favourites_items')
+
+    def __str__(self):
+        return self.product.name
+
+
