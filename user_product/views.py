@@ -67,7 +67,10 @@ class GetOrdersByUser(ListView):
 
 class CreateFeedback(View):
     def get(self, request, product_id):
-        user = request.user
+        feedback_exist = Feedback.objects.filter(user=self.request.user, product=self.kwargs['product_id']).exists()
+        if feedback_exist:
+            prev_url = request.META.get('HTTP_REFER')
+            return render(request, 'user_product/messages/already_created.html', {'prev_url': prev_url})
         product = Product.objects.get(id=product_id)
         form = FeedbackForm()
         context = {
@@ -86,3 +89,10 @@ class CreateFeedback(View):
                 image = FeedbackImage.objects.create(
                     feedback=feedback, image=file)
             return redirect('get_product', product_id=product_id)
+
+class RemoveFeedback(View):
+    def get(self, request, feedback_id):
+        feedback = Feedback.objects.get(id=feedback_id)
+        product_id = feedback.product.id
+        feedback.delete()
+        return redirect('get_product', product_id)

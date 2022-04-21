@@ -7,6 +7,7 @@ from django.views.generic import DetailView, UpdateView, ListView
 from django.views.decorators.csrf import csrf_protect
 
 from main.forms import EditProfileForm, UserLoginForm, UserRegisterForm
+from cart.forms import CartAddProductForm
 
 from .models import AdvUser, Profile
 from catalog.models import Product
@@ -15,7 +16,8 @@ from catalog.models import Product
 def home(request):
     products = Product.objects.all().order_by('-quantity_of_purchases')[0:5]
     context = {
-        'products': products
+        'products': products,
+        'cart_product_form': CartAddProductForm,
     }
     return render(request, 'main/home.html', context)
 

@@ -3,6 +3,7 @@ from django.views.generic import DetailView, ListView, View
 from django.shortcuts import render, redirect
 
 from .models import Category, Product, Brand, ProductFeature
+from user_product.models import Feedback
 
 from cart.forms import CartAddProductForm
 
@@ -40,7 +41,8 @@ class GetOneProduct(DetailView):
         context = super().get_context_data(**kwargs)
         context['features'] = ProductFeature.objects.filter(
             product__id=self.kwargs['product_id'])
-        context['cart_product_form'] = CartAddProductForm()
+        feedback_exist = Feedback.objects.filter(user=self.request.user, product=self.kwargs['product_id']).exists()
+        context['feedback_exists'] = feedback_exist
         return context
 
 

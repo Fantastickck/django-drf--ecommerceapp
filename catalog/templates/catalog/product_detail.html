@@ -22,7 +22,7 @@
     {% else %}
     <p>НЕТ В НАЛИЧИИ</p>
     {% endif %}
-    
+
     <table class="table">
         <thead>
             <tr>
@@ -49,29 +49,38 @@
             {% endfor %}
         </tbody>
     </table>
-    
-    
+
+
     <h3>Отзывы о {{ product.name }}</h3>
     <h4>Общий рейтинг: {{ product.get_total_rating }} &#9733;</h4>
+    {% if feedback_exists %}
+    <p>Вы уже оставили свой отзыв</p>
+    {% else %}
+
     {% if request.user.is_authenticated %}
     <a href="{% url 'create_feedback' product.id %}" class="btn btn-primary">Написать отзыв</a>
     {% else %}
     <a href="{% url 'login' %}">Войдите, чтобы оставить отзыв</a>
     {% endif %}
+
+    {% endif %}
     {% for feedback in product.feedbacks.all %}
     <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{{ feedback.user.username }}</h5>
-          <h5 class="card-title"> {{ feedback.rating }} &#9733;</h5>
-          <p class="card-text">{{ feedback.text }}</p>
-          {% for image in feedback.images.all %}
+            <h5 class="card-title">{{ feedback.user.username }}</h5>
+            <h5 class="card-title"> {{ feedback.rating }} &#9733;</h5>
+            <p class="card-text">{{ feedback.text }}</p>
+            {% for image in feedback.images.all %}
             <img src="{{ image.image.url }}" alt="" height="100px">
-          {% endfor %}
+            {% endfor %}
         </div>
         <div class="card-footer">
-            {{ feedback.created_at}}
+            {{ feedback.created_at}} 
+            {% if feedback.user == request.user %}
+            <a href="{% url 'remove_feedback' feedback.id %}">Удалить</a>
+            {% endif %}
         </div>
-      </div>
+    </div>
     {% endfor %}
 
 </div>

@@ -22,6 +22,11 @@
             </a>
             <h5 class="card-text">{{ product.get_total_rating }} &#9733; <span class="text-muted">({{ product.feedbacks.count }})</span></h5>
             <h5>{{ product.price }} Руб</h5>
+            <form action="{% url 'cart_add' product.id %}" method="post">
+                {% csrf_token %}
+                {{ cart_product_form.as_p }}
+                <button class="btn btn-primary" type="submit">В корзину</button>
+            </form>
         </div>
     </div>
     {% endfor %}
