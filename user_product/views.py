@@ -39,7 +39,7 @@ def order_create(request):
                 product.quantity_of_purchases += item['quantity']
                 product.save()
             cart.clear()
-            return render(request, 'user_product/created.html', {'order': order})
+            return render(request, 'user_product/created_order.html', {'order': order})
     else:
         if request.user.is_authenticated:
             profile = Profile.objects.get(user=request.user)
@@ -53,7 +53,7 @@ def order_create(request):
             })
         else:
             form = OrderForm()
-        return render(request, 'user_product/create.html', {'cart': cart, 'form': form})
+        return render(request, 'user_product/create_order.html', {'cart': cart, 'form': form})
 
 
 class GetOrdersByUser(ListView):

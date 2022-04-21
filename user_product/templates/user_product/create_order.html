@@ -7,8 +7,16 @@
 {% block content %}
 <h2>Ваш заказ</h2>
 {% for item in cart %}
-<p>{{ item.quantity }} X {{ item.product.name }}</p>
-<span>{{ item.total_price }}</span>
+<h6>Позиция {{ forloop.counter }}</h6>
+<img src="{{ item.product.image.url }}" alt="" height="60px">
+<p><a href="{% url 'get_product' item.product.id %}">Товар: {{ item.product.name }}</a></p>
+<p>Цена: {{ item.price }} Руб</p>
+<span> Количество: {{ item.quantity }}</span>
+<h6>Итого: {{ item.total_price }}</h6>
+{% for item in order.items.all %}
+
+
+{% endfor %}
 {% endfor %}
 <h3>ВСЕГО: {{ cart.get_total_price }}</h3>
 <form action="" method="post">
