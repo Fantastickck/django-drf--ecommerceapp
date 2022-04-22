@@ -22,6 +22,7 @@ class Profile(models.Model):
     user = models.OneToOneField(AdvUser, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=255, blank=True, verbose_name='Имя')
     last_name = models.CharField(max_length=255, blank=True, verbose_name='Фамилия')
+    image = models.ImageField(blank=True, upload_to='profile_images', verbose_name='Изображение профиля')
     phone = models.CharField(max_length=255, blank=True, verbose_name='Номер телефона')
     date_of_birth = models.DateField(blank=True)
     default_address = models.CharField(max_length=255, blank=True, verbose_name='Адрес')

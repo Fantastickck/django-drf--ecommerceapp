@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 
 
@@ -9,13 +10,24 @@
 {% block content %}
 {% include 'inc/_sidebar_profile.html' %}
 <div class="any-info">
+    {% if profile.image %}
+    <img src="{{ profile.image.url }}" style="border-radius: 50%;" width="250px" height="250px">
+    {% else %}
+    <img src="{% static 'images/no_photo.png' %}" style="border-radius: 50%;" width="250px" height="250px">
+    {% endif %}
+    
     <h6>Имя пользователя: {{ user.username }}</h6>
     <h6>Эл. почта: {{ user.email }}</h6>
-    <p>{{ profile.first_name }}</p>
-    <p>{{ profile.last_name }}</p>
-    <p>{{ profile.phone }}</p>
-    <p>{{ profile.date_of_birth }}</p>
-    <p>{{ profile.default_address }}</p>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

@@ -82,7 +82,8 @@ class GetOrEditProfile(View):
         profile = Profile.objects.get(user=user)
         form = EditProfileForm(instance=profile)
         context = {
-            'form': form
+            'form': form,
+            'profile': profile
         }
         return render(request, 'main/user.html', context)
 
