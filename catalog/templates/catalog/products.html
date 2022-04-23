@@ -1,14 +1,35 @@
 {% extends 'base.html' %}
 
+
 {% block title %}
 {{ category.name }}
 {% endblock %}
 
 {% block content %}
+
+{% comment %}
+{% for feature in features %}
+{{ feature }}
+{% for field in feature.productfeature_set.all.distinct %}
+{{ field.value_float }}
+{{ field.value_text }}
+{% endfor %}
+{{ value }}
+{% endfor %}
+{% endcomment %}
+
+<!-- <form action="" method="get">
+    {{ filter.form }}
+    <button type="submit" class="btn btn-primary">Применить</button>
+</form> -->
+
+
 {% if products.count == 0 %}
 <h2>Нет товаров этой категории</h2>
 <a href="{{ prev_url }}">Вернуться назад</a>
+
 {% else %}
+
 {% for product in products %}
 <div class="card">
     {% if product.image %}

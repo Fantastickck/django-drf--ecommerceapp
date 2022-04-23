@@ -2,8 +2,9 @@ from django.views.generic import DetailView, ListView, View
 
 from django.shortcuts import render, redirect
 
-from .models import Category, Product, Brand, ProductFeature
+from .models import Category, Product, Brand, ProductFeature, Feature
 from user_product.models import Feedback
+from .filters import ProductFilter
 
 from cart.forms import CartAddProductForm
 
@@ -15,22 +16,26 @@ class GetCategories(ListView):
 
 
 class GetProducts(ListView):
+    model = Product
     template_name = 'catalog/products.html'
     context_object_name = 'products'
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['filter'] = ProductFilter(self.request.GET, queryset=self.get_queryset())
         context['category'] = Category.objects.get(slug=self.kwargs['slug'])
         context['cart_product_form'] = CartAddProductForm()
         context['prev_url'] = self.request.META.get('HTTP_REFERER')
         return context
 
+    # def get_queryset(self):
+    #     if self.request.GET.get('brand'):
+    #         return Product.objects.filter(category__slug=self.kwargs['slug'], brand__slug=self.request.GET.get('brand'))
+    #     else:
+    #         return Product.objects.filter(category__slug=self.kwargs['slug'])
     def get_queryset(self):
-        if self.request.GET.get('brand'):
-            return Product.objects.filter(category__slug=self.kwargs['slug'], brand__slug=self.request.GET.get('brand'))
-        else:
-            return Product.objects.filter(category__slug=self.kwargs['slug'])
+        return Product.objects.filter(category__slug=self.kwargs['slug'])
 
 
 class GetOneProduct(DetailView):
