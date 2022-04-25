@@ -1,6 +1,7 @@
 <div class="list-group">
-    <a href="{% url 'get_user' user.profile.slug %}" class="list-group-item list-group-item-action active" aria-current="true">
+    <a href="{% url 'get_user' user.profile.slug %}" class="list-group-item list-group-item-action" aria-current="true">
       Профиль
     </a>
     <a href="{% url 'get_orders' user.profile.slug %}" class="list-group-item list-group-item-action">Заказы</a>
+    <a href="{% url 'change_password' %}" class="list-group-item list-group-item-action">Сменить пароль</a>
   </div>

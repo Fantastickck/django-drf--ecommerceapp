@@ -33,3 +33,8 @@ class EditProfileForm(forms.ModelForm):
         model = Profile
         fields = ('first_name', 'last_name', 'phone', 'date_of_birth', 'default_address')
         
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}))
+    new_password = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(attrs={'placeholder': 'Новый пароль'}))
+    new_password_again = forms.CharField(label='Повтор', widget=forms.PasswordInput(attrs={'placeholder': 'Повтор нового пароля'}))

@@ -1,12 +1,14 @@
 
+from ast import Pass
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.contrib.auth.views import PasswordChangeView, PasswordContextMixin
 from django.views import View
 from django.views.generic import DetailView, UpdateView, ListView
 from django.views.decorators.csrf import csrf_protect
 
-from main.forms import EditProfileForm, UserLoginForm, UserRegisterForm
+from main.forms import ChangePasswordForm, EditProfileForm, UserLoginForm, UserRegisterForm
 from cart.forms import CartAddProductForm
 
 from .models import AdvUser, Profile
@@ -46,7 +48,7 @@ def user_register(request):
             messages.error(request, 'Ошибка регистрации')
     else:
         if request.user.is_authenticated:
-            return render(request,'main/messages/already_auth.html')
+            return render(request, 'main/messages/already_auth.html')
         form = UserRegisterForm()
         context = {
             'form': form
@@ -63,7 +65,7 @@ def user_login(request):
             return redirect('home')
     else:
         if request.user.is_authenticated:
-            return render(request,'main/messages/already_auth.html')
+            return render(request, 'main/messages/already_auth.html')
         form = UserLoginForm()
     context = {
         'form': form
@@ -74,6 +76,42 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+class ChangePassword(View):
+    def get(self, request):
+        form = ChangePasswordForm()
+        prev_url = request.META.get('HTTP_REFERER')
+        context = {
+            'form': form,
+            'prev_url': prev_url,
+        }
+        return render(request, 'main/change_password.html', context)
+
+    def post(self, request):
+        user = AdvUser.objects.get(id=request.user.id)
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            old_password = data['old_password']
+            new_password = data['new_password']
+            new_password_again = data['new_password_again']
+            if user.check_password(old_password):
+                if new_password == new_password_again:
+                    print(old_password, new_password)
+                    user.set_password(new_password)
+                    user.save()
+
+                else:
+
+                    messages.error(request, 'Введенные пароль не совпадают')
+                    return redirect('change_password')
+            else:
+                messages.error(request, 'Неправильный пароль')
+                return redirect('change_password')
+
+            logout(request)
+            return redirect('login')
 
 
 class GetOrEditProfile(View):
