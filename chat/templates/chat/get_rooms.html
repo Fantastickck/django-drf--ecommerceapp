@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Чаты
+{% endblock %}
+
+
+{% block content %}
+{% for room in rooms %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ room.user.last }}</h5>
+        <a href="{% url 'get_room' room.id %}" class="btn btn-primary">Открыть</a>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

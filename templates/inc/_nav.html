@@ -4,6 +4,18 @@
         <form class="d-flex">
             <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
             <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+            {% if request.user.is_authenticated %}
+            {% if request.user.username == 'admin' %}
+            <span class="navbar-text">
+                <a href="{% url 'get_rooms_for_admin' request.user.id %}">Чаты</a>
+            </span>
+            {% else %}
+            <span class="navbar-text">
+                <a href="{% url 'get_room' request.user.id %}">Чат </a>
+            </span>
+            {% endif %}
+            {% endif %}
+            
             <span class="navbar-text">
                 <a href="{% url 'get_favourites' %}">Избранное </a>
             </span>

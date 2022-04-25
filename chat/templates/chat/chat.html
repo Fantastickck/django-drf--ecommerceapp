@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Чат поддержки
+{% endblock %}
+
+
+{% block content %}
+{% for message in chat_messages %}
+<div class="card">
+    <div class="card-header">
+       {{ message.created_at }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ message.author }}</h5>
+        <p class="card-text">{{ message.text }}</p>
+    </div>
+</div>
+{% endfor %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <button class="btn btn-primary" type="sumbit">Отправить</button>
+</form>
+{% endblock %}

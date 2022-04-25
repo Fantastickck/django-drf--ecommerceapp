@@ -39,13 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'debug_toolbar',
-    
+
     'main',
     'catalog',
     'cart',
     'user_product',
 
     # 'django_filters',
+    'channels',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +67,7 @@ ROOT_URLCONF = 'ecommerceapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,6 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ecommerceapp.wsgi.application'
+ASGI_APPLICATION = 'ecommerceapp.asgi.application'
 
 
 # Database
@@ -150,3 +153,4 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
