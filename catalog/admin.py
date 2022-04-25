@@ -19,7 +19,7 @@ class ProductImageInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'quantity', 'quantity_of_purchases',
-                    'image_show', 'category', 'brand', 'get_total_rating')
+                    'image_show', 'category', 'brand', 'total_rating')
     inlines = [
         ProductImageInline,
         ProductFeatureInline,
@@ -31,7 +31,6 @@ class ProductAdmin(admin.ModelAdmin):
         return None
 
     image_show.short_description = 'Миниатюра'
-    Product.get_total_rating.short_description = 'Рейтинг'
 
 
 @admin.register(Category)

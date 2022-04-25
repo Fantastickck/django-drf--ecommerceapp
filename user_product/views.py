@@ -84,8 +84,10 @@ class CreateFeedback(View):
         form = FeedbackForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
+            product = Product.objects.get(id=product_id)
             feedback = Feedback.objects.create(
-                user=request.user, product_id=product_id, text=data['text'], rating=data['rating'])
+                user=request.user, product=product, text=data['text'], rating=data['rating'])
+            product.save()
             for file in request.FILES.getlist('images'):
                 image = FeedbackImage.objects.create(
                     feedback=feedback, image=file)

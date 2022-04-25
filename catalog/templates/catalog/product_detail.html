@@ -10,7 +10,7 @@
     <a href="{{ product.image.url }}"><img src="{{ product.image.url }}" width="400px" alt="..."></a>
     {% endif %}
     <h2 class="name-product">{{ product.name }}</h2>
-    <h5>{{ product.get_total_rating }} &#9733;</h5>
+    <h5>{{ product.total_rating }} &#9733;</h5>
     <h3>{{product.price}} руб</h3>
     <p>Бренд: {{ product.brand.name }}</p>
     {% if product.quantity %}
@@ -53,7 +53,7 @@
 
 
     <h3>Отзывы о {{ product.name }}</h3>
-    <h4>Общий рейтинг: {{ product.get_total_rating }} &#9733;</h4>
+    <h4>Общий рейтинг: {{ product.total_rating }} &#9733;</h4>
     {% if feedback_exists %}
     <p>Вы уже оставили свой отзыв</p>
     {% else %}

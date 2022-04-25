@@ -18,10 +18,10 @@
 {% endfor %}
 {% endcomment %}
 
-<!-- <form action="" method="get">
+<form action="" method="get">
     {{ filter.form }}
     <button type="submit" class="btn btn-primary">Применить</button>
-</form> -->
+</form>
 
 
 {% if products.count == 0 %}
@@ -30,7 +30,7 @@
 
 {% else %}
 
-{% for product in products %}
+{% for product in filter.qs %}
 <div class="card">
     {% if product.image %}
     <a href="{{ product.image.url }}"><img src="{{ product.image.url }}" height="125px" alt="..."></a>
@@ -39,6 +39,7 @@
         <a href="{% url 'get_product' product.pk %}">
             <h5 class="card-title">{{ product.name }}</h5>
         </a>
+        <p class="card-text">{{ product.total_rating }} &#9733;</p>
         <p class="card-text">Цена: {{ product.price }} Руб</p>
     </div>
     {% if product.quantity %}

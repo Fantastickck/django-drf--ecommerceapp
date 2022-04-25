@@ -9,6 +9,7 @@ class Product(models.Model):
     quantity_of_purchases = models.PositiveIntegerField(default=0, verbose_name='Количество заказов товара')
     image = models.ImageField(
         upload_to='photos/%Y/%m/%d/', blank=True, verbose_name='Изображение товара')
+    total_rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name='Общий рейтинг', null=True)
     category = models.ForeignKey(
         'Category', on_delete=models.CASCADE, verbose_name='Категория', related_name='products')
     brand = models.ForeignKey(
@@ -21,6 +22,11 @@ class Product(models.Model):
         count_feedback = self.feedbacks.count() if self.feedbacks.count()!=0 else 1 
         sum_rating = sum(feedback.rating for feedback in self.feedbacks.all())
         return round(sum_rating/count_feedback, 1)
+
+    def save(self, *args, **kwargs):
+        self.total_rating = self.get_total_rating()
+        super().save(*args, **kwargs)
+
 
     class Meta:
         verbose_name = 'Товар'
