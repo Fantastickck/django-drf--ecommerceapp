@@ -12,7 +12,7 @@
     {% endif %}
     <div>
       <h5 class="mt-0">{{ brand.name }}</h5>
-      <a href="{% url 'get_brand' brand.slug %}" class="stretched-link"></a>
+      <a href="{% url 'get_brand' brand.id %}" class="stretched-link"></a>
     </div>
   </div>
 {% endfor %}

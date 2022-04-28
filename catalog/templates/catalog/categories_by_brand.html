@@ -15,7 +15,7 @@
   <div class="card-body">
     <h5 class="card-title">{{ category.name }}</h5>
   </div>
-  <a href="{% url 'get_products' category.slug %}?brand={{ brand.slug }}" class="stretched-link"></a>
+  <a href="{% url 'get_products' category.slug %}?brand={{ brand.id }}" class="stretched-link"></a>
 </div>
 {% endfor %}
 
