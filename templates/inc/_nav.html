@@ -16,9 +16,11 @@
             {% endif %}
             {% endif %}
             
+            {% if request.user.is_authenticated %}
             <span class="navbar-text">
                 <a href="{% url 'get_favourites' %}">Избранное </a>
             </span>
+            {% endif %}
             <span class="navbar-text">
                 <a href="{% url 'cart_detail' %}">Корзина </a>
             </span>

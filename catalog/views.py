@@ -62,9 +62,10 @@ class GetOneProduct(DetailView):
         context = super().get_context_data(**kwargs)
         context['features'] = ProductFeature.objects.filter(
             product__id=self.kwargs['product_id'])
-        feedback_exist = Feedback.objects.filter(
-            user=self.request.user, product=self.kwargs['product_id']).exists()
-        context['feedback_exists'] = feedback_exist
+        if self.request.user.is_authenticated:
+            feedback_exist = Feedback.objects.filter(
+                user=self.request.user, product=self.kwargs['product_id']).exists()
+            context['feedback_exists'] = feedback_exist
         context['cart_product_form'] = CartAddProductForm()
 
         return context
