@@ -16,7 +16,6 @@ class GetCategories(ListView):
 
 
 class GetProducts(ListView):
-    model = Product
     template_name = 'catalog/products.html'
     context_object_name = 'products'
     paginate_by = 5
@@ -33,7 +32,7 @@ class GetProducts(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter'] = ProductFilter(self.request.GET, queryset=self.get_queryset())
-        context['category'] = Category.objects.get(slug=self.kwargs['slug'])
+        # context['category'] = Category.objects.get(slug=self.kwargs['slug'])
         context['cart_product_form'] = CartAddProductForm()
         context['query_string'] = self.get_query_string()
         context['prev_url'] = self.request.META.get('HTTP_REFERER')
@@ -61,14 +60,17 @@ class GetOneProduct(DetailView):
     def get_context_data(self, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['features'] = ProductFeature.objects.filter(
-            product__id=self.kwargs['product_id'])
+            product__id=self.kwargs['product_id']).select_related('feature')
         if self.request.user.is_authenticated:
             feedback_exist = Feedback.objects.filter(
                 user=self.request.user, product=self.kwargs['product_id']).exists()
             context['feedback_exists'] = feedback_exist
         context['cart_product_form'] = CartAddProductForm()
-
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
 
 
 class GetBrands(ListView):

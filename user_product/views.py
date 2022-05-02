@@ -57,13 +57,13 @@ def order_create(request):
 
 
 class GetOrdersByUser(ListView):
-    model = Order
     template_name = 'user_product/orders_by_user.html'
     context_object_name = 'orders'
     paginate_by = 3
 
     def get_queryset(self):
-        return Order.objects.filter(user__profile__slug=self.kwargs['slug'])
+        orders = Order.objects.filter(user__profile__slug=self.kwargs['slug']).prefetch_related('items')
+        return orders
 
 
 class CreateFeedback(View):

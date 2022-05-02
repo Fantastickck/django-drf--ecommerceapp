@@ -71,9 +71,11 @@
             <h5 class="card-title">{{ feedback.user.username }}</h5>
             <h5 class="card-title"> {{ feedback.rating }} &#9733;</h5>
             <p class="card-text">{{ feedback.text }}</p>
+            {% if feedback.images %}
             {% for image in feedback.images.all %}
             <img src="{{ image.image.url }}" alt="" height="100px">
             {% endfor %}
+            {% endif %}
         </div>
         <div class="card-footer">
             {{ feedback.created_at}} 

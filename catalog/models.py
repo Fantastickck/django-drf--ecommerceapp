@@ -86,7 +86,7 @@ class Feature(models.Model):
 
 
 class ProductFeature(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.PROTECT,)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='features')
     feature = models.ForeignKey(Feature, on_delete=models.PROTECT)
     value_float = models.DecimalField(
         blank=True, max_digits=10, decimal_places=1, verbose_name='Значение', null=True)

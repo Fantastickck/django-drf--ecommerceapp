@@ -16,7 +16,7 @@ from catalog.models import Product
 
 
 def home(request):
-    products = Product.objects.all().order_by('-quantity_of_purchases')[0:5]
+    products = Product.objects.all().order_by('-quantity_of_purchases')[0:5].prefetch_related('feedbacks')
     context = {
         'products': products,
         'cart_product_form': CartAddProductForm,
