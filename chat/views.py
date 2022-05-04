@@ -8,9 +8,9 @@ from main.models import AdvUser
 
 
 class GetRoomsForAdmin(View):
-    def get(self, request, id):
+    def get(self, request):
         user = request.user
-        rooms = user.room_set.all()
+        rooms = user.rooms.all()
         context = {
             'rooms': rooms,
         }

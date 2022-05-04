@@ -7,7 +7,7 @@
             {% if request.user.is_authenticated %}
             {% if request.user.username == 'admin' %}
             <span class="navbar-text">
-                <a href="{% url 'get_rooms_for_admin' request.user.id %}">Чаты</a>
+                <a href="{% url 'get_rooms_for_admin' %}">Чаты</a>
             </span>
             {% else %}
             <span class="navbar-text">

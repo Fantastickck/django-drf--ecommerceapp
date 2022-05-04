@@ -3,7 +3,7 @@ from django.db import models
 from main.models import AdvUser
 
 class Room(models.Model):
-    user = models.ManyToManyField(AdvUser, verbose_name='Участник', blank=True)
+    user = models.ManyToManyField(AdvUser, verbose_name='Участник', blank=True, related_name='rooms')
 
     def __str__(self):
         return '{}'.format(self.id)
