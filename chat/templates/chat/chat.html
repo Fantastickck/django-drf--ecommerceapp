@@ -7,21 +7,90 @@
 
 
 {% block content %}
-{% for message in chat_messages %}
-<div class="card">
-    <div class="card-header">
-       {{ message.created_at }}
+<div id="chat-messages">
+    {% for message in chat_messages %}
+    <div class="card">
+        <div class="card-header">
+            {{ message.created_at }}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ message.author }}</h5>
+            <p class="card-text">{{ message.text }}</p>
+        </div>
     </div>
-    <div class="card-body">
-        <h5 class="card-title">{{ message.author }}</h5>
-        <p class="card-text">{{ message.text }}</p>
-    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 
-<form action="" method="post">
+<form action="." method="post">
     {% csrf_token %}
-    {{ form.as_ul }}
-    <button class="btn btn-primary" type="sumbit">Отправить</button>
+    <input id="chat-message-input" type="text" name="content" placeholder="Введите сообщение" class="form-control">
+    <button id="chat-message-submit" class="btn btn-primary">Отправить</button>
 </form>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+{{ room.id|json_script:"json-roomid" }}
+{{ request.user.username|json_script:"json-username"}}
+
+
+<script>
+    const roomId = JSON.parse(document.getElementById('json-roomid').textContent)
+    const userName = JSON.parse(document.getElementById('json-username').textContent)
+
+
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/'
+        + roomId
+        + '/'
+    );
+
+
+    chatSocket.onmessage = function (e) {
+        console.log('onmessage')
+
+        const data = JSON.parse(e.data)
+
+        if (data.message) {
+            let html = '<div class="card">'
+                html += '<div class="card-header">'
+                html += 'Только что'
+                html += '</div>'
+                html += '<div class="card-body">'
+                html += `<h5 class="card-title"> ${data.username} </h5>`
+                html += `<p class="card-text"> ${data.message} </p>`
+                html += '</div>'
+                html += '</div>'
+
+            document.querySelector('#chat-messages').innerHTML += html
+
+        } else {
+            alert('Вы ввели пустое сообщение')
+        }
+    }
+
+    chatSocket.onclose = function (e) {
+        console.log('onclose');
+    }
+
+
+    document.querySelector('#chat-message-submit').onclick = function (e) {
+        e.preventDefault()
+        const messageInputDom = document.querySelector('#chat-message-input')
+        const message = messageInputDom.value
+
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': userName,
+            'room': roomId
+        }))
+
+        messageInputDom.value = ''
+        return false
+    }
+</script>
 {% endblock %}

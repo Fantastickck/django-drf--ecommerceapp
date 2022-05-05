@@ -23,23 +23,10 @@ class GetRoom(View):
         room = Room.objects.get_or_create(id=id)[0]
         room.user.add(request.user.id)
         room.user.add(user_admin.id)
-        messages = room.messages.all().order_by('-created_at')[:5]
-        form = MessageForm()
+        messages = room.messages.all().order_by('-created_at')
         context = {
             'room': room,
             'chat_messages': messages,
-            'form': form,
         }
         return render(request, 'chat/chat.html', context)
-
-    def post(self, request, id):
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            Message.objects.create(
-                room=Room.objects.get(id=id),
-                author=request.user,
-                text=data['text'],
-            )
-            return redirect('get_room', id)
 
