@@ -13,6 +13,8 @@ urlpatterns = [
     path('', include('user_product.urls')),
     path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
+
+    path('api/v1/', include('api.urls')),
 ]
 
 if DEBUG:
@@ -23,6 +25,6 @@ if DEBUG:
     mimetypes.add_type("application/javascript", ".js", True)
 
     urlpatterns = [
-                      path('debug/', include(debug_toolbar.urls)),
-                  ] + urlpatterns
+        path('debug/', include(debug_toolbar.urls)),
+    ] + urlpatterns
     urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

@@ -31,13 +31,13 @@
                     {{ user.username }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="{% url 'get_user' user.profile.slug %}">Профиль</a></li>
+                    <li><a class="dropdown-item" href="{% url 'get_user' %}">Профиль</a></li>
                     <li><a class="dropdown-item" href="{% url 'get_orders' user.profile.slug %}">Заказы</a></li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout_app' %}">Выйти</a></li>
                 </ul>
             </div>
             <!-- <span class="navbar-text">
@@ -45,7 +45,7 @@
             </span> -->
             {% else %}
             <span class="navbar-text">
-                <a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login_app' %}">Войти</a>
             </span>
             {% endif %}
 

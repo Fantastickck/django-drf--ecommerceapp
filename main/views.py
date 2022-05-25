@@ -75,7 +75,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return redirect('login')
+    return redirect('login_app')
 
 
 class ChangePassword(View):
@@ -115,7 +115,7 @@ class ChangePassword(View):
 
 
 class GetOrEditProfile(View):
-    def get(self, request, slug):
+    def get(self, request):
         user = request.user
         profile = Profile.objects.get(user=user)
         form = EditProfileForm(instance=profile)
@@ -125,10 +125,10 @@ class GetOrEditProfile(View):
         }
         return render(request, 'main/user.html', context)
 
-    def post(self, request, slug):
+    def post(self, request):
         user = request.user
         form = EditProfileForm(request.POST)
         if form.is_valid():
             Profile.objects.update_or_create(
                 user=user, defaults={**form.cleaned_data})
-            return redirect('get_user', slug=slug)
+            return redirect('get_user')

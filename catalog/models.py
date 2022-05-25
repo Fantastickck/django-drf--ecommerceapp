@@ -34,7 +34,10 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
-    image = models.FileField(upload_to='products/%Y/%m/%d/', verbose_name='Изображения')
+    image = models.ImageField(upload_to='products/%Y/%m/%d/', verbose_name='Изображения')
+
+    def __str__(self):
+        return str(self.image)
 
 
 class Category(models.Model):
@@ -87,11 +90,14 @@ class Feature(models.Model):
 
 class ProductFeature(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='features')
-    feature = models.ForeignKey(Feature, on_delete=models.PROTECT)
+    feature = models.ForeignKey(Feature, on_delete=models.PROTECT, related_name='features')
     value_float = models.DecimalField(
         blank=True, max_digits=10, decimal_places=1, verbose_name='Значение', null=True)
     value_text = models.TextField(
         blank=True, verbose_name='Значение', null=True)
+
+    def __str__(self):
+        return f'{self.feature.name} {self.value_float} {self.value_text}'
 
     class Meta:
         verbose_name = 'Характеристика товара'

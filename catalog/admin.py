@@ -11,9 +11,9 @@ class ProductFeatureInline(admin.TabularInline):
 class BrandInline(admin.TabularInline):
     model = Brand.category.through
 
+
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-
 
 
 @admin.register(Product)
@@ -60,8 +60,6 @@ class BrandAdmin(admin.ModelAdmin):
     logo_show.__name__ = 'Лого'
 
 
-
-
-
 admin.site.register(Feature)
 admin.site.register(ProductFeature)
+admin.site.register(ProductImage)
