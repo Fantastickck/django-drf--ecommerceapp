@@ -62,7 +62,7 @@ class GetOrdersByUser(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        orders = Order.objects.filter(user__profile__slug=self.kwargs['slug']).prefetch_related('items')
+        orders = Order.objects.filter(user__profile__slug=self.kwargs['slug']).prefetch_related('items').prefetch_related('items__product')
         return orders
 
 
@@ -105,9 +105,11 @@ class RemoveFeedback(View):
 class GetFavourites(View):
     def get(self, request):
         favourites = Favourites.objects.get_or_create(user=self.request.user)[0]
+        favourites_items = FavouritesItem.objects.filter(favourites=favourites).select_related('product')
         cart_product_form = CartAddProductForm()
         context = {
             'favourites': favourites,
+            'favourites_items': favourites_items,
             'cart_product_form': cart_product_form 
         }
         return render(request, 'user_product/favourites.html', context)

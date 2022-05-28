@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1 class="h1">Ваше избранное</h1>
-{% for item in favourites.items.all %}
+{% for item in favourites_items %}
 <div class="card">
     {% if item.product.image %}
     <a href="{{ item.product.image.url }}"><img src="{{ item.product.image.url }}" height="125px" alt="..."></a>

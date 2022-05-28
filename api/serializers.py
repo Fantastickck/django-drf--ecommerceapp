@@ -98,12 +98,12 @@ class CategoryListSerializer(serializers.ModelSerializer):
 class CategoryDetailSerializer(serializers.ModelSerializer):
     '''Сериализатор для одной категории'''
     products = ProductListSerializer(many=True)
-    total = serializers.SerializerMethodField(source='get_total')
+    total_products = serializers.SerializerMethodField(source='get_total_products')
 
-    def get_total(self, category):
+    def get_total_products(self, category):
         return category.products.all().count()
 
     class Meta:
         model = Category
-        fields = ['name', 'slug', 'info', 'products', 'total']
+        fields = ['name', 'slug', 'info',  'total_products', 'products']
 

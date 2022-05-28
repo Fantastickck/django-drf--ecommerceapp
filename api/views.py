@@ -20,15 +20,15 @@ class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class FavouritesDatailView(generics.ListAPIView):
-    queryset = FavouritesItem.objects.all()
-    serializer_class = FavouritesItemSerializer
+    queryset = Favourites.objects.all()
+    serializer_class = FavouritesSerializer
     lookup_field = 'slug'
-    
+
     def get_queryset(self):
-        user = AdvUser.objects.get(profile__slug=self.kwargs['slug'])
-        queryset = FavouritesItem.objects.filter(favourites__user=user).prefetch_related('product').select_related('product')
+        queryset = Favourites.objects.filter(user__profile__slug=self.kwargs['slug']).prefetch_related(
+            'items', 'items__product', 'items__product__category', 'items__product__brand').select_related('user')
         return queryset
-    
+
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AdvUser.objects.all()
@@ -38,7 +38,8 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Product.objects.all().prefetch_related('feedbacks').prefetch_related('features').prefetch_related('images')
+    queryset = Product.objects.all().prefetch_related(
+        'feedbacks').prefetch_related('features').prefetch_related('features__feature').prefetch_related('images')
     serializer_class = ProductDetailSerializer
 
 

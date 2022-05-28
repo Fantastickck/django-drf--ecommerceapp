@@ -31,7 +31,8 @@ class GetProducts(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = ProductFilter(self.request.GET, queryset=self.get_queryset())
+        context['filter'] = ProductFilter(
+            self.request.GET, queryset=self.get_queryset())
         # context['category'] = Category.objects.get(slug=self.kwargs['slug'])
         context['cart_product_form'] = CartAddProductForm()
         context['query_string'] = self.get_query_string()
@@ -61,13 +62,14 @@ class GetOneProduct(DetailView):
         context = super().get_context_data(**kwargs)
         context['features'] = ProductFeature.objects.filter(
             product__id=self.kwargs['product_id']).select_related('feature')
+        context['feedbacks'] = Feedback.objects.filter(product__id=self.kwargs['product_id']).select_related('user').prefetch_related('images')
         if self.request.user.is_authenticated:
             feedback_exist = Feedback.objects.filter(
                 user=self.request.user, product=self.kwargs['product_id']).exists()
             context['feedback_exists'] = feedback_exist
         context['cart_product_form'] = CartAddProductForm()
         return context
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset
@@ -86,7 +88,8 @@ class GetCategoriesByBrand(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['products'] = Product.objects.filter(brand__slug=self.kwargs['slug'])
-        context['products'] = Product.objects.filter(brand__id=self.kwargs['id'])
+        context['products'] = Product.objects.filter(
+            brand__id=self.kwargs['id'])
         # context['brand'] = Brand.objects.get(slug=self.kwargs['slug'])
         context['brand'] = Brand.objects.get(id=self.kwargs['id'])
         return context
