@@ -19,6 +19,16 @@ class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
     #     return obj
 
 
+class FavouritesItemCreateView(generics.CreateAPIView):
+    queryset = FavouritesItem
+    serializer_class = FavouritesItemSerializer
+
+
+class FavouritesItemDeleteView(generics.DestroyAPIView):
+    queryset = FavouritesItem
+    serializer_class = FavouritesItemSerializer
+
+
 class FavouritesDatailView(generics.ListAPIView):
     queryset = Favourites.objects.all()
     serializer_class = FavouritesSerializer
@@ -54,7 +64,7 @@ class ProductsByCategoryListView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'slug'
 
 
-class ListProductsView(generics.ListAPIView):
+class ListProductsView(generics.ListAPIView, generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
 

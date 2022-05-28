@@ -22,11 +22,11 @@ class ProductSerializerForFavourites(serializers.ModelSerializer):
 
 
 class FavouritesItemSerializer(serializers.ModelSerializer):
-    product = ProductSerializerForFavourites(many=False)
+    # product = serializers.CharField()
 
     class Meta:
         model = FavouritesItem
-        exclude = ['id', 'favourites']
+        fields = '__all__'
 
 
 class FavouritesSerializer(serializers.ModelSerializer):
@@ -66,6 +66,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     '''Сериалайзер для списка товаров'''
+    category = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
     class Meta:
         model = Product
