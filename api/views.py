@@ -1,22 +1,31 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
+from rest_framework import permissions
 
 from catalog.models import Product, Category
 from main.models import AdvUser, Profile
-from user_product.models import Favourites, FavouritesItem
+from user_product.models import Favourites, FavouritesItem, Feedback
 
-from .serializers import CategoryListSerializer, CategoryDetailSerializer, FavouritesItemSerializer, ProductListSerializer, \
+from .permissions import IsAdminOrReadOnly, IsAuthorFeedback
+from .serializers import CategoryListSerializer, CategoryDetailSerializer, FavouritesItemSerializer, FeedbackSerializer, ProductListSerializer, \
     ProductDetailSerializer, ProfileSerializer, FavouritesSerializer
 
 
 class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Profile
+    queryset = Profile.objects.all()
+    permission_classes = [permissions.IsAdminUser]
     serializer_class = ProfileSerializer
     lookup_field = 'slug'
 
-    # def get_object(self):
-    #     obj = Profile.objects.get(id=self.request.user.id)
-    #     return obj
+
+class ProfileByUserView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Profile.objects.all()
+    # permission_classes = [permissions.IsAuthsenticated]
+    serializer_class = ProfileSerializer
+
+    def get_object(self):
+        obj = Profile.objects.get(user__id=self.request.user.id)
+        return obj
 
 
 class FavouritesItemCreateView(generics.CreateAPIView):
@@ -40,6 +49,17 @@ class FavouritesDatailView(generics.ListAPIView):
         return queryset
 
 
+class FeedbacksListView(generics.ListAPIView, generics.CreateAPIView):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+
+
+class FeedbacksDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Feedback.objects.all()
+    permission_classes = [IsAuthorFeedback]
+    serializer_class = FeedbackSerializer
+
+
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AdvUser.objects.all()
 
@@ -50,22 +70,26 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all().prefetch_related(
         'feedbacks').prefetch_related('features').prefetch_related('features__feature').prefetch_related('images')
+    permission_classes = [IsAdminOrReadOnly]
     serializer_class = ProductDetailSerializer
 
 
 class CategoryListView(generics.ListAPIView, generics.CreateAPIView):
     queryset = Category.objects.all().order_by('pk')
+    permission_classes = [IsAdminOrReadOnly]
     serializer_class = CategoryListSerializer
 
 
 class ProductsByCategoryListView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all().prefetch_related('products')
     serializer_class = CategoryDetailSerializer
+    permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
 
 
 class ListProductsView(generics.ListAPIView, generics.CreateAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().select_related('category').select_related('brand')
+    permission_classes = [IsAdminOrReadOnly]
     serializer_class = ProductListSerializer
 
     # def get_queryset(self):

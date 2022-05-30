@@ -18,11 +18,18 @@
         <p class="card-text">Цена: {{ item.product.price }} Руб</p>
     </div>
 <div>
-<form action="{% url 'cart_add' item.product.id %}" method="post">
+{% if product.quantity %}
+<form action="{% url 'cart_add' product.id %}" method="post">
     {% csrf_token %}
     {{ cart_product_form.as_p }}
     <button class="btn btn-primary" type="submit">В корзину</button>
     <a href="{% url 'remove_favourite_item' item.id %}">Удалить из избранного</a>
 </form>
+{% else %}
+<div class="card-footer">
+    <span>НЕТ В НАЛИЧИИ</span>
+    <a href="{% url 'remove_favourite_item' item.id %}">Удалить из избранного</a>
+</div>
+{% endif %}
 {% endfor %}
 {% endblock %}

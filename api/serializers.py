@@ -58,7 +58,14 @@ class FeatureSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class FeedbackListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields = ['id', 'user', 'product']
+
+
 class FeedbackSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(slug_field='username', read_only=True)
     class Meta:
         model = Feedback
         fields = '__all__'
