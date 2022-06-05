@@ -27,10 +27,11 @@ class Product(models.Model):
         self.total_rating = self.get_total_rating()
         super().save(*args, **kwargs)
 
-
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
+        ordering = ['price']
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')

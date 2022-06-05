@@ -1,6 +1,3 @@
-from cProfile import label
-from django.db.models import Q
-from django.forms import ModelChoiceField
 import django_filters
 
 from .models import Category, Product, Brand

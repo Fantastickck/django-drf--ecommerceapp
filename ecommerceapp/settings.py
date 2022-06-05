@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'user_product',
     'chat',
 
-    # 'django_filters',
+    'django_filters',
     'channels',
     'rest_framework',
     'rest_framework.authtoken',
@@ -167,5 +167,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication'
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
     ]
 }
