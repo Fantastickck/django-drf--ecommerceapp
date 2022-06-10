@@ -4,6 +4,8 @@ from .views import ProductsListView, ProductDetailView, CategoryListView, Produc
     ProfileDetailView, FavouritesDatailView, FavouritesItemCreateView, FavouritesItemDeleteView, ProfileByUserView, \
         FeedbacksListView, FeedbacksDetailView, OrdersByUserListView, OrdersListView, OrdersDetailView
 
+from .yasg import urlpatterns as docs_urls
+
 urlpatterns = [
     path('catalog/categories/', CategoryListView.as_view()),
     path('catalog/categories/<slug:slug>/', ProductsByCategoryListView.as_view()),
@@ -24,3 +26,5 @@ urlpatterns = [
     path('authenticate/', include('djoser.urls.authtoken')),
     # path('user/', UserDetailView.as_view())
 ]
+
+urlpatterns += docs_urls

@@ -36,18 +36,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'django_filters',
+    'channels',
+    'rest_framework',
+    'rest_framework.authtoken',
+    # 'rest_auth'
+    'djoser',
+    'drf_yasg',
+
     'main',
     'catalog',
     'cart',
     'user_product',
     'chat',
 
-    'django_filters',
-    'channels',
-    'rest_framework',
-    'rest_framework.authtoken',
-    # 'rest_auth'
-    'djoser'
+
 ]
 
 MIDDLEWARE = [
