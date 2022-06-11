@@ -62,7 +62,10 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            messages.success(request, 'Успешный вход')
             return redirect('home')
+        else:
+            messages.error(request, 'Ошибка входа')
     else:
         if request.user.is_authenticated:
             return render(request, 'main/messages/already_auth.html')
