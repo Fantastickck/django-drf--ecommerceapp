@@ -5,14 +5,27 @@ from .models import Product, Category, Brand, Feature, ProductFeature, ProductIm
 
 
 class ProductFeatureInline(admin.TabularInline):
+    """
+    Список характеристик товара.
+    """
     model = ProductFeature
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.select_related('feature', 'product')
 
 
 class BrandInline(admin.TabularInline):
+    """
+    Список брендов.
+    """
     model = Brand.category.through
 
 
 class ProductImageInline(admin.TabularInline):
+    """
+    Список фото товара
+    """
     model = ProductImage
 
 
@@ -20,12 +33,16 @@ class ProductImageInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'quantity', 'quantity_of_purchases',
                     'image_show', 'category', 'brand', 'total_rating')
+
     inlines = [
         ProductImageInline,
         ProductFeatureInline,
     ]
 
+    list_select_related = ['features']
+
     def image_show(self, obj):
+        """Изображение товара в админке в виде миниатюры."""
         if obj.image:
             return mark_safe("<img src='{}' width='60' />".format(obj.image.url))
         return None
@@ -41,6 +58,7 @@ class CategoryAdmin(admin.ModelAdmin):
     ]
 
     def logo_show(self, obj):
+        """Лого категории в админке в виде миниатюры."""
         if obj.logo:
             return mark_safe("<img src='{}' width='60' />".format(obj.logo.url))
         return None
@@ -53,6 +71,7 @@ class BrandAdmin(admin.ModelAdmin):
     list_display = ('name', 'logo_show', 'info')
 
     def logo_show(self, obj):
+        """Лого бренда в админке в виде миниатюры."""
         if obj.logo:
             return mark_safe("<img src='{}' height='30' />".format(obj.logo.url))
         return None

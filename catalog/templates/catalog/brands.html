@@ -7,13 +7,13 @@
 {% block content %}
 {% for brand in brands %}
 <div class="d-flex position-relative category">
-    {% if brand.logo %}
-    <img src="{{ brand.logo.url }}" class="flex-shrink-0 me-3" alt="..." height="60px">
-    {% endif %}
-    <div>
-      <h5 class="mt-0">{{ brand.name }}</h5>
-      <a href="{% url 'get_brand' brand.id %}" class="stretched-link"></a>
-    </div>
+  {% if brand.logo %}
+  <img src="{{ brand.logo.url }}" class="flex-shrink-0 me-3" alt="..." height="60px">
+  {% endif %}
+  <div>
+    <h5 class="mt-0">{{ brand.name }}</h5>
+    <a href="{% url 'get_brand' brand.id %}" class="stretched-link"></a>
   </div>
+</div>
 {% endfor %}
 {% endblock %}

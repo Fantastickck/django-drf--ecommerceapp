@@ -1,17 +1,21 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, View
 
-
 from .models import Favourites, Order, OrderItem, Feedback, FeedbackImage, FavouritesItem
 from .forms import OrderForm, FeedbackForm
 from cart.forms import CartAddProductForm
-from main.models import AdvUser, Profile
+from main.models import Profile
 from cart.cart import Cart
 from catalog.models import Product
 
 
-# Возможно стоит переписать в вид контроллера-класса!!!
+# Возможно стоит переписать в виде контроллера-класса View!!!
 def order_create(request):
+    """
+    Представление создания заказа с информацией из корзины,
+    а также с автозаполнением информации в форму данных о заказчике
+    (Если request.user.is_authenticated)
+    """
     cart = Cart(request)
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -27,6 +31,7 @@ def order_create(request):
                 phone=form_data['phone'],
                 address=form_data['address'],
             )
+            # Перечисление товаров из корзины
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
@@ -57,18 +62,27 @@ def order_create(request):
 
 
 class GetOrdersByUser(ListView):
+    """
+    Представление списка заказов пользователя
+    """
     template_name = 'user_product/orders_by_user.html'
     context_object_name = 'orders'
     paginate_by = 3
 
     def get_queryset(self):
-        orders = Order.objects.filter(user__profile__slug=self.kwargs['slug']).prefetch_related('items').prefetch_related('items__product')
+        orders = Order.objects.filter(user__profile__slug=self.kwargs['slug']).prefetch_related(
+            'items').prefetch_related('items__product')
         return orders
 
 
 class CreateFeedback(View):
+    """
+    Создание отзыва
+    """
     def get(self, request, product_id):
-        feedback_exist = Feedback.objects.filter(user=self.request.user, product=self.kwargs['product_id']).exists()
+        feedback_exist = Feedback.objects.filter(
+            user=self.request.user, product=self.kwargs['product_id']).exists()
+        # проверка на то, оставлял ли данный пользователь отзыв
         if feedback_exist:
             prev_url = request.META.get('HTTP_REFER')
             return render(request, 'user_product/messages/already_created.html', {'prev_url': prev_url})
@@ -103,23 +117,34 @@ class RemoveFeedback(View):
 
 
 class GetFavourites(View):
+    """
+    Представление списка избранных товаров пользователя
+    """
     def get(self, request):
-        favourites = Favourites.objects.get_or_create(user=self.request.user)[0]
-        favourites_items = FavouritesItem.objects.filter(favourites=favourites).select_related('product')
+        favourites = Favourites.objects.get_or_create(
+            user=self.request.user)[0]
+        favourites_items = FavouritesItem.objects.filter(
+            favourites=favourites).select_related('product')
         cart_product_form = CartAddProductForm()
         context = {
             'favourites': favourites,
             'favourites_items': favourites_items,
-            'cart_product_form': cart_product_form 
+            'cart_product_form': cart_product_form
         }
         return render(request, 'user_product/favourites.html', context)
 
 
 class AddFavouritesItem(View):
+    """
+    Добавление товара в избранное
+    """
+
     def get(self, request, product_id):
-        favourites = Favourites.objects.get_or_create(user=self.request.user)[0]
+        favourites = Favourites.objects.get_or_create(
+            user=self.request.user)[0]
         product = Product.objects.get(id=product_id)
-        favourites_item = FavouritesItem.objects.get_or_create(favourites=favourites, product=product)
+        favourites_item = FavouritesItem.objects.get_or_create(
+            favourites=favourites, product=product)
         return redirect('get_favourites')
 
 
@@ -128,4 +153,3 @@ class RemoveFavouritesItem(View):
         favourites_item = FavouritesItem.objects.get(id=item_id)
         favourites_item.delete()
         return redirect('get_favourites')
-        

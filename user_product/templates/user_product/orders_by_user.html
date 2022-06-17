@@ -20,6 +20,7 @@
                 <p>{{ item.quantity }} X {{ item.product.price }} Руб</p>
                 <span> Количество: {{ item.quantity }}</span>
                 <h6>Итого: {{ item.get_cost }}</h6>
+                <span>{{ order.created_date }}</span>
                 {% endfor %}
             </div>
         </div>

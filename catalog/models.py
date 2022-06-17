@@ -5,11 +5,14 @@ class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name='Наименование товара')
     description = models.TextField(blank=True, verbose_name='Описание товара')
     price = models.IntegerField(verbose_name='Цена товара')
-    quantity = models.PositiveIntegerField(default=0, verbose_name='Количество товаров')
-    quantity_of_purchases = models.PositiveIntegerField(default=0, verbose_name='Количество заказов товара')
+    quantity = models.PositiveIntegerField(
+        default=0, verbose_name='Количество товаров')
+    quantity_of_purchases = models.PositiveIntegerField(
+        default=0, verbose_name='Количество заказов товара')
     image = models.ImageField(
         upload_to='photos/%Y/%m/%d/', blank=True, verbose_name='Изображение товара')
-    total_rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name='Общий рейтинг', null=True)
+    total_rating = models.DecimalField(
+        max_digits=2, decimal_places=1, verbose_name='Общий рейтинг', null=True)
     category = models.ForeignKey(
         'Category', on_delete=models.CASCADE, verbose_name='Категория', related_name='products')
     brand = models.ForeignKey(
@@ -19,7 +22,8 @@ class Product(models.Model):
         return self.name
 
     def get_total_rating(self):
-        count_feedback = self.feedbacks.count() if self.feedbacks.count()!=0 else 1 
+        """Получение итогового рейтинга из отзывов."""
+        count_feedback = self.feedbacks.count() if self.feedbacks.count() != 0 else 1
         sum_rating = sum(feedback.rating for feedback in self.feedbacks.all())
         return round(sum_rating/count_feedback, 1)
 
@@ -34,8 +38,10 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
-    image = models.ImageField(upload_to='products/%Y/%m/%d/', verbose_name='Изображения')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
+    image = models.ImageField(
+        upload_to='products/%Y/%m/%d/', verbose_name='Изображения')
 
     def __str__(self):
         return str(self.image)
@@ -63,7 +69,8 @@ class Brand(models.Model):
     info = models.TextField(blank=True, verbose_name='Описание бренда')
     logo = models.ImageField(
         blank=True, upload_to='logos/%Y/%m/%d/', verbose_name='Лого Бренда')
-    category = models.ManyToManyField(Category, blank=True, related_name='brands')
+    category = models.ManyToManyField(
+        Category, blank=True, related_name='brands')
 
     slug = models.SlugField(max_length=255, unique=True,
                             verbose_name='URL бренда')
@@ -77,6 +84,9 @@ class Brand(models.Model):
 
 
 class Feature(models.Model):
+    """
+    Модель наименования характеристики.
+    """
     category = models.ForeignKey(
         Category, on_delete=models.PROTECT, verbose_name='Категория')
     name = models.CharField(max_length=255, verbose_name='Особенность')
@@ -90,8 +100,13 @@ class Feature(models.Model):
 
 
 class ProductFeature(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='features')
-    feature = models.ForeignKey(Feature, on_delete=models.PROTECT, related_name='features')
+    """
+    Модель значения характеристики.
+    """
+    product = models.ForeignKey(
+        Product, on_delete=models.PROTECT, related_name='features')
+    feature = models.ForeignKey(
+        Feature, on_delete=models.PROTECT, related_name='features')
     value_float = models.DecimalField(
         blank=True, max_digits=10, decimal_places=1, verbose_name='Значение', null=True)
     value_text = models.TextField(
@@ -103,4 +118,3 @@ class ProductFeature(models.Model):
     class Meta:
         verbose_name = 'Характеристика товара'
         verbose_name_plural = 'Характеристики товаров'
-

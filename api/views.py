@@ -22,8 +22,9 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """Детали профиля, детали для админов"""
-
+    """
+    Детали профиля, детали для админов.
+    """
     queryset = Profile.objects.all()
     permission_classes = [permissions.IsAdminUser]
     serializer_class = ProfileSerializer
@@ -31,10 +32,11 @@ class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProfileByUserView(generics.RetrieveUpdateDestroyAPIView):
-    """Детали профиля по авторизированному пользователю"""
+    """
+    Детали профиля по авторизированному пользователю.
+    """
 
     queryset = Profile.objects.all()
-    # permission_classes = [permissions.IsAuthsenticated]
     serializer_class = ProfileSerializer
 
     def get_object(self):
@@ -64,22 +66,26 @@ class FavouritesDatailView(generics.ListAPIView):
 
 
 class FeedbacksListView(generics.ListCreateAPIView):
-    """Список отзывов"""
+    """
+    Список отзывов.
+    """
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
 
 
 class FeedbacksDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """Детали одного отзыва. Полный доступ автору"""
-
+    """
+    Детали одного отзыва. Полный доступ автору.
+    """
     queryset = Feedback.objects.all()
     permission_classes = [IsAuthorFeedback]
     serializer_class = FeedbackSerializer
 
 
 class OrdersByUserListView(generics.ListCreateAPIView):
-    """Список заказов по пользователю"""
-
+    """
+    Список заказов по пользователю.
+    """
     queryset = Order.objects.all()
     serializer_class = OrderListSerializer
 
@@ -90,22 +96,25 @@ class OrdersByUserListView(generics.ListCreateAPIView):
 
 
 class OrdersListView(generics.ListCreateAPIView):
-    """Общий список заказов"""
-
+    """
+    Общий список заказов.
+    """
     queryset = Order.objects.all().prefetch_related('items')
     serializer_class = OrderListSerializer
 
 
 class OrdersDetailView(generics.RetrieveAPIView):
-    """Детали одного заказа"""
-
+    """
+    Детали одного заказа.
+    """
     queryset = Order.objects.all().prefetch_related('items')
     serializer_class = OrderDetailSerializer
 
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """Детали по одному продукту. Полный набор методов"""
-
+    """
+    Детали по одному продукту. Полный набор методов.
+    """
     queryset = Product.objects.all().prefetch_related(
         'feedbacks', 'feedbacks__user', 'features', 'features__feature', 'images')
     permission_classes = [IsAdminOrReadOnly]
@@ -113,16 +122,18 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class CategoryListView(generics.ListAPIView, generics.CreateAPIView):
-    """Список категорий. Добавление категории"""
-
+    """
+    Список категорий. Добавление категории.
+    """
     queryset = Category.objects.all().order_by('pk')
     permission_classes = [IsAdminOrReadOnly]
     serializer_class = CategoryListSerializer
 
 
 class ProductsByCategoryListView(generics.RetrieveUpdateDestroyAPIView):
-    """Список товаров по категории"""
-
+    """
+    Список товаров по категории.
+    """
     queryset = Category.objects.all().prefetch_related('products')
     serializer_class = CategoryDetailSerializer
     permission_classes = [IsAdminOrReadOnly]
@@ -132,19 +143,12 @@ class ProductsByCategoryListView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProductsListView(generics.ListAPIView, generics.CreateAPIView):
-    """Общий список товаров. Добавление товара"""
-
+    """
+    Общий список товаров. Добавление товара.
+    """
     queryset = Product.objects.all().select_related('category', 'brand')
     permission_classes = [IsAdminOrReadOnly]
     serializer_class = ProductListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductFilter
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     price = self.request.query_params.get('price').split('-')
-    #     if len(price) == 2:
-    #         queryset = queryset.filter(price__gte=int(price[0]), price__lte=int(price[1]))
-    #     if len(price) == 1:
-    #         queryset = queryset.filter(price=int(price[0]))
-    #     return queryset

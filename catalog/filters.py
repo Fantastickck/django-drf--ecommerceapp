@@ -23,7 +23,6 @@ class ProductFilter(django_filters.FilterSet):
 
     ordering = django_filters.ChoiceFilter(
         label='Сортировка', choices=CHOICES, method='order_by')
-    # brand_ = django_filters.ModelChoiceFilter(label='Бренд', queryset=Brand.objects.filter())
     price = django_filters.ChoiceFilter(
         label='Цена', choices=CHOICES_PRICE, method='filter_by_price')
 
@@ -31,7 +30,6 @@ class ProductFilter(django_filters.FilterSet):
         model = Product
         fields = [
             'brand',
-            
         ]
 
     def order_by(self, queryset, name, value):

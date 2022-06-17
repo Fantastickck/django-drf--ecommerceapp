@@ -17,6 +17,7 @@ class ProductFilter(filters.FilterSet):
         fields = ('name', 'price', 'brand', 'category', 'total_rating')
 
 
+# Незавершенная реализация филтров для товаров определенной категории
 class ProductByCategoryFilter(filters.FilterSet):
     products = filters.CharFilter(field_name='products__name')
     price = filters.RangeFilter(field_name='products__price')

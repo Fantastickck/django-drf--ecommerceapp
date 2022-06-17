@@ -1,11 +1,8 @@
-
-from ast import Pass
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
+from django.db import transaction
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.contrib.auth.views import PasswordChangeView, PasswordContextMixin
 from django.views import View
-from django.views.generic import DetailView, UpdateView, ListView
 from django.views.decorators.csrf import csrf_protect
 
 from main.forms import ChangePasswordForm, EditProfileForm, UserLoginForm, UserRegisterForm
@@ -16,7 +13,8 @@ from catalog.models import Product
 
 
 def home(request):
-    products = Product.objects.all().order_by('-quantity_of_purchases')[0:5].prefetch_related('feedbacks')
+    products = Product.objects.all().order_by(
+        '-quantity_of_purchases')[0:5].prefetch_related('feedbacks')
     context = {
         'products': products,
         'cart_product_form': CartAddProductForm,
@@ -25,7 +23,11 @@ def home(request):
 
 
 @csrf_protect
+@transaction.atomic
 def user_register(request):
+    """
+    Регистрация пользователя и создание пустого профиля.
+    """
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -50,9 +52,9 @@ def user_register(request):
         if request.user.is_authenticated:
             return render(request, 'main/messages/already_auth.html')
         form = UserRegisterForm()
-        context = {
-            'form': form
-        }
+    context = {
+        'form': form
+    }
     return render(request, 'main/register.html', context)
 
 
@@ -82,6 +84,10 @@ def user_logout(request):
 
 
 class ChangePassword(View):
+    """
+    Представлене функции изменения пароля.
+    """
+
     def get(self, request):
         form = ChangePasswordForm()
         prev_url = request.META.get('HTTP_REFERER')
@@ -106,18 +112,20 @@ class ChangePassword(View):
                     user.save()
 
                 else:
-
                     messages.error(request, 'Введенные пароль не совпадают')
                     return redirect('change_password')
             else:
                 messages.error(request, 'Неправильный пароль')
                 return redirect('change_password')
-
             logout(request)
             return redirect('login')
 
 
 class GetOrEditProfile(View):
+    """
+    Представление информации профиля (также ее изменения) в виде формы с заполненными данными.
+    """
+
     def get(self, request):
         user = request.user
         profile = Profile.objects.get(user=user)

@@ -1,10 +1,11 @@
-import json 
+import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
 from .models import Room, Message
 from main.models import AdvUser
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -15,7 +16,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -52,7 +52,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'username': username,
             'room': room
         }))
-    
+
     @sync_to_async
     def save_message(self, username, room, message):
         author = AdvUser.objects.get(username=username)

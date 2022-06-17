@@ -1,7 +1,5 @@
 from django import forms
 
-from .models import Order, OrderItem
-
 
 class OrderForm(forms.Form):
     first_name = forms.CharField(max_length=255, label='Имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -11,7 +9,7 @@ class OrderForm(forms.Form):
     address = forms.CharField(max_length=255, label='Адрес', widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 
-RATING = [(i, str(i)) for i in range(1, 6)]
+RATING = [(i, str(i)) for i in range(1, 6)] #Неправильная реализация!!!
 
 class FeedbackForm(forms.Form):
     text = forms.CharField(label='Текст отзыва', widget=forms.Textarea(attrs={'class': 'form-control'}), required=False)

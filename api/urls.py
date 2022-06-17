@@ -21,10 +21,8 @@ urlpatterns = [
     path('favourites/<slug:slug>/', FavouritesDatailView.as_view()),
     path('feedbacks/', FeedbacksListView.as_view()),
     path('feedbacks/<int:pk>/', FeedbacksDetailView.as_view()),
-    # path('auth/', include('rest_framework.urls')),
     path('auth/', include('djoser.urls')),
     path('authenticate/', include('djoser.urls.authtoken')),
-    # path('user/', UserDetailView.as_view())
 ]
 
 urlpatterns += docs_urls

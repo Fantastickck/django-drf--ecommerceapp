@@ -15,6 +15,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializerForFavourites(serializers.ModelSerializer):
+    """
+    Сериализатор для товаров в избранном.
+    """
     category = serializers.CharField()
     brand = serializers.CharField()
 
@@ -24,7 +27,6 @@ class ProductSerializerForFavourites(serializers.ModelSerializer):
 
 
 class FavouritesItemSerializer(serializers.ModelSerializer):
-    # product = serializers.CharField()
 
     class Meta:
         model = FavouritesItem
@@ -75,8 +77,9 @@ class FeedbackSerializer(serializers.ModelSerializer):
 
 
 class OrderItemDetailSerializer(serializers.ModelSerializer):
-    """Детали элемента заказа"""
-
+    """
+    Детали элемента заказа.
+    """
     product = serializers.CharField()
 
     class Meta:
@@ -85,8 +88,9 @@ class OrderItemDetailSerializer(serializers.ModelSerializer):
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
-    """Детали одного заказа"""
-
+    """
+    Детали одного заказа.
+    """
     items = OrderItemDetailSerializer(many=True)
     total_price = serializers.SerializerMethodField(source='get_total_price')
     total_positions = serializers.SerializerMethodField(
@@ -109,8 +113,9 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 
 
 class OrderListSerializer(serializers.ModelSerializer):
-    """Список заказов"""
-
+    """
+    Список заказов.
+    """
     total_price = serializers.SerializerMethodField(source='get_total_price')
 
     def get_total_price(self, order):
@@ -122,8 +127,9 @@ class OrderListSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    '''Сериализатор для списка товаров'''
-
+    """
+    Сериализатор для списка товаров.
+    """
     category = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
     class Meta:
@@ -132,8 +138,9 @@ class ProductListSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    '''Сериализатор для одного товара'''
-
+    """
+    Сериализатор для одного товара
+    """
     feedbacks = FeedbackSerializer(many=True)
     features = FeatureSerializer(many=True)
     total_feedbacks = serializers.SerializerMethodField(
@@ -149,7 +156,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
-    '''Сериализатор для списка категорий'''
+    """
+    Сериализатор для списка категорий.
+    """
 
     class Meta:
         model = Category
@@ -157,8 +166,9 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
-    '''Сериализатор для одной категории'''
-
+    """
+    Сериализатор для одной категории.
+    """
     products = ProductListSerializer(many=True)
     total_products = serializers.SerializerMethodField(
         source='get_total_products')

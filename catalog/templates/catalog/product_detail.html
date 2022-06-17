@@ -78,7 +78,7 @@
             {% endif %}
         </div>
         <div class="card-footer">
-            {{ feedback.created_at}} 
+            {{ feedback.created_at}}
             {% if feedback.user == request.user %}
             <a href="{% url 'remove_feedback' feedback.id %}">Удалить</a>
             {% endif %}

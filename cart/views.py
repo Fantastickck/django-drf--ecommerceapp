@@ -8,6 +8,9 @@ from .forms import CartAddProductForm
 
 @require_POST
 def cart_add(request, product_id):
+    """
+    Добавление товара в корзину и redirect к деталям корзины.
+    """
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     form = CartAddProductForm(request.POST)
