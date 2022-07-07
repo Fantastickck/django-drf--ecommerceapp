@@ -39,8 +39,6 @@ class ProductAdmin(admin.ModelAdmin):
         ProductFeatureInline,
     ]
 
-    list_select_related = ['features']
-
     def image_show(self, obj):
         """Изображение товара в админке в виде миниатюры."""
         if obj.image:
